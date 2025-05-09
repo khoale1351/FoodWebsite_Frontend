@@ -1,0 +1,391 @@
+/* Biến CSS để dễ quản lý màu sắc */
+:root {
+    --primary-color: #00FF88; /* Xanh neon */
+    --secondary-color: #FF007A; /* Hồng neon */
+    --background-color: #F7FAFF; /* Trắng pastel */
+    --container-bg: #E0F7FA; /* Xanh mint nhạt */
+    --text-color: #333333; /* Đen nhạt */
+    --accent-color: #FFFF00; /* Vàng neon */
+    --gradient: linear-gradient(45deg, #00FF88, #FF007A);
+    --shadow: 0 0 15px rgba(0, 255, 136, 0.3); /* Bóng phát sáng xanh neon */
+    --shadow-pink: 0 0 15px rgba(255, 0, 122, 0.3); /* Bóng hồng neon */
+}
+
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+/* Hiệu ứng tải trang */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hiệu ứng ánh sáng xoay */
+@keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Hiệu ứng ánh sáng radial */
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.3; }
+}
+
+/* Hiệu ứng nhấp nháy cho nút */
+@keyframes buttonGlow {
+    0%, 100% { box-shadow: 0 0 20px var(--primary-color); }
+    50% { box-shadow: 0 0 30px var(--secondary-color); }
+}
+
+/* Hiệu ứng rung khi click */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+/* Hiệu ứng gợn sóng khi focus */
+@keyframes ripple {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* Hiệu ứng nhấp nháy neon cho tiêu đề */
+@keyframes neonGlow {
+    0%, 100% { text-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--primary-color), 0 0 35px var(--primary-color); }
+    50% { text-shadow: 0 0 25px var(--primary-color), 0 0 35px var(--secondary-color), 0 0 45px var(--secondary-color); }
+}
+
+/* Animation slideIn */
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Class chung cho các liên kết điều hướng */
+.nav-link {
+    color: var(--primary-color); /* Màu mặc định là xanh neon */
+    text-decoration: none;
+    font-size: 1em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2; /* Đảm bảo liên kết nằm trên cùng */
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    transform: scale(1.1);
+    border-bottom: 2px solid var(--gradient); /* Gạch chân gradient khi hover */
+}
+
+/* Header */
+header {
+    background: var(--gradient);
+    color: #FFFFFF;
+    box-shadow: var(--shadow);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px solid var(--primary-color);
+    animation: fadeIn 1s ease-out;
+}
+
+    header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+        opacity: 0.6;
+        animation: pulseGlow 3s infinite ease-in-out;
+        z-index: -1; /* Đặt xuống dưới để không che phủ */
+        pointer-events: none; /* Không chặn sự kiện click */
+    }
+
+    header h1 {
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        text-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--primary-color);
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 3em;
+        position: relative;
+        animation: slideIn 1s ease-out;
+        animation: neonGlow 1.5s infinite;
+    }
+
+/* Container đăng ký */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 250px);
+    padding: 20px;
+    animation: fadeIn 1.4s ease-out;
+}
+
+.register-form {
+    background-color: var(--container-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 50px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    border: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+    .register-form::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0, 255, 136, 0.2), transparent);
+        animation: rotateGlow 4s infinite linear;
+        z-index: -1; /* Đặt xuống dưới để không che phủ */
+        pointer-events: none; /* Không chặn sự kiện click */
+    }
+
+    .register-form:hover {
+        box-shadow: 0 0 40px var(--primary-color);
+        border-color: var(--secondary-color);
+    }
+
+    .register-form h2 {
+        margin-bottom: 30px;
+        font-size: 2.2em;
+        color: var(--primary-color);
+        text-shadow: 0 0 8px var(--primary-color);
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        animation: slideIn 1.6s ease-out;
+    }
+
+.form-group {
+    margin-bottom: 30px;
+    text-align: left;
+    animation: fadeIn 1.8s ease-out;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+        color: var(--text-color);
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 15px;
+        border: 3px solid var(--primary-color);
+        border-radius: 10px;
+        font-size: 1.1em;
+        outline: none;
+        background-color: #FFFFFF;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+        box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+    }
+
+        .form-group input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+            transform: scale(1.03);
+        }
+
+        .form-group input:focus + label {
+            color: var(--secondary-color);
+            text-shadow: 0 0 8px var(--secondary-color);
+        }
+
+.register-button {
+    width: 100%;
+    padding: 15px;
+    background: var(--gradient);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 2s ease-out;
+    z-index: 1; /* Đảm bảo nút nằm trên pseudo-element */
+}
+
+    .register-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: all 0.5s ease;
+        pointer-events: none; /* Không chặn sự kiện click */
+    }
+
+    .register-button:hover::before {
+        left: 100%;
+    }
+
+    .register-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px var(--primary-color);
+        animation: buttonGlow 1.5s infinite;
+    }
+
+.login-link {
+    margin-top: 25px;
+    font-size: 1.1em;
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+    animation: fadeIn 2.2s ease-out;
+}
+
+    .login-link .nav-link {
+        z-index: 2; /* Đảm bảo liên kết nằm trên pseudo-element */
+    }
+
+/* Nút quay lại */
+.back-button {
+    display: inline-block;
+    margin: 15px 0;
+    padding: 12px 25px;
+    background: var(--gradient);
+    color: #FFFFFF;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 1.2s ease-out;
+}
+
+    .back-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: all 0.5s ease;
+        pointer-events: none; /* Không chặn sự kiện click */
+    }
+
+    .back-button:hover::before {
+        left: 100%;
+    }
+
+    .back-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px var(--primary-color);
+    }
+
+/* Footer */
+footer {
+    background: var(--gradient);
+    color: #FFFFFF;
+    box-shadow: var(--shadow);
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    border-top: 3px solid var(--primary-color);
+}
+
+    footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+        opacity: 0.6;
+        animation: pulseGlow 3s infinite ease-in-out;
+        z-index: -1; /* Đặt xuống dưới để không che phủ */
+        pointer-events: none; /* Không chặn sự kiện click */
+    }
+
+.social-links {
+    margin-bottom: 15px;
+}
+
+    .social-links .nav-link {
+        color: var(--accent-color);
+        margin: 0 20px;
+        font-size: 1.2em;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+    }
+
+        .social-links .nav-link:hover {
+            color: #FFFFFF;
+            text-shadow: 0 0 15px var(--accent-color);
+            transform: scale(1.3);
+            border-bottom: 2px solid var(--gradient); /* Gạch chân gradient khi hover */
+        }
+
+footer p {
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    font-size: 1em;
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+    .register-form {
+        padding: 25px;
+    }
+
+    .register-form h2 {
+        font-size: 1.8em;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .form-group input, .register-button, .back-button {
+        font-size: 1em;
+    }
+
+    .social-links a {
+        margin: 0 10px;
+        font-size: 1em;
+    }
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bản Đồ Ẩm Thực Đặc Sản Việt Nam</title>
+    <link rel="stylesheet" href="/Home/styles.css">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <!-- Thanh điều hướng bên trái -->
+            <nav class="task-bar left">
+                <ul>
+                    <li><a href="/Home/index.html">Trang chủ </a></li>
+                    <li><a href="/Home/lichsu/khampha.html">Khám phá </a></li>
+                </ul>
+            </nav>
+
+            <!-- Thanh tìm kiếm ở giữa -->
+            <div class="search-bar">
+                <form action="/Home/Timkiem/search.html" method="get">
+                    <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+
+            <!-- Đăng nhập/Đăng ký bên phải -->
+            <div class="login-section right">
+                <a href="/dangnhap-dangky/dangnhap/login.html">Đăng nhập</a>
+                <a href="/dangnhap-dangky/dangky/register.html">Đăng ký</a>
+            </div>
+        </div>
+
+    <header>
+        <h1>KẾT QUẢ TÌM KIẾM</h1>
+        <p>Kết quả tìm kiếm cho: <span id="search-query"></span></p>
+    </header>
+
+    <section class="search-container">
+        <div class="search-list" id="search-list"></div>
+    </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="social-links">
+                <a href="https://facebook.com">Facebook</a>
+                <a href="https://instagram.com">Instagram</a>
+                <a href="https://twitter.com">Twitter</a>
+            </div>
+            <p> Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+        </footer> 
+
+    <script src="/Home/script.js"></script>
+    <script src="/Home/Timkiem/script.js"></script>
+    
+</body>
+</html>
