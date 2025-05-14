@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám Phá - Lịch Sử Xem</title>
+    <link rel="stylesheet" href="/Home/lichsu/styles.css">
+</head>
+<body> 
+    <div class="top-bar">
+        <div class="task-bar left">
+            <ul>
+                <li><a href="/Home/index.html">Trang chủ</a></li>
+                <li><a href="/Home/lichsu/khampha.html">Khám phá</a></li>
+            </ul>
+        </div>
+        
+        <div class="search-bar">
+            <form action="/Home/Timkiem/search.html" method="get">
+                <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+        <div class="login-section right">
+            <a href="/dangnhap-dangky/dangnhap/login.html">Đăng nhập</a>
+            <a href="/dangnhap-dangky/dangky/register.html">Đăng ký</a>
+        </div>
+    </div>  
+
+    <header>
+        <h1>LỊCH SỬ XEM CỦA BẠN</h1>
+        <p>Xem lại các món đặc sản bạn đã khám phá!</p>
+    </header>
+
+    <section class="history-container">
+        <h2>Các Món Đặc Sản Đã Xem</h2>
+        <div class="history-list" id="history-list"></div>
+    </section>
+
+       <!-- Footer -->
+       <footer>
+        <div class="social-links">
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://instagram.com">Instagram</a>
+            <a href="https://twitter.com">Twitter</a>
+        </div>
+        <p> Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+    </footer>
+
+    <script src="/Home/lichsu/script.js"></script>
+    <script src="/Home/index.js"></script>
+    <script src="/Home/province.js"></script>
+    <script>
+        // Hiển thị lịch sử xem
+        function loadHistory() {
+            const historyList = document.getElementById('history-list');
+            let history = JSON.parse(localStorage.getItem('viewHistory')) || [];
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p>Bạn chưa xem món đặc sản nào!</p>';
+                return;
+            }
+
+            historyList.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="history-details">
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <a href="/chitietcactinh/${item.tinhThanhId}.html">Xem lại</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Gọi hàm khi trang tải
+        document.addEventListener('DOMContentLoaded', loadHistory);
+    </script>
+
+</body>
+</html>
