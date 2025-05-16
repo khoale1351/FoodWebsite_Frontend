@@ -9,7 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error(`Lỗi ${response.status}: ${response.statusText}`);
             }
-            return await response.json();
+            const text = await response.text(); // Kiểm tra phản hồi
+            if (!text) {
+                throw new Error('Phản hồi API rỗng');
+            }
+            return JSON.parse(text);
         } catch (error) {
             console.error(`Lỗi khi gọi API ${endpoint}:`, error.message);
             throw error;
@@ -23,14 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             areas.forEach(area => {
                 const provinceId = area.getAttribute('href')?.split('/').pop()?.replace('.html', '');
-                const province = provinces.find(p => p.id.toLowerCase() === provinceId);
+                const province = provinces.find(p => p.id != null && String(p.id) === provinceId);
 
                 if (province) {
                     area.setAttribute('title', province.name);
                     area.setAttribute('data-tooltip', province.name);
                 }
 
-                area.addEventListener('mouseover', function(e) {
+                area.addEventListener('mouseover', function (e) {
                     const provinceName = this.getAttribute('title') || 'Không xác định';
                     const tooltip = document.createElement('div');
                     tooltip.className = 'tooltip';
@@ -50,10 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     area.addEventListener('mouseout', () => tooltip.remove());
                 });
 
-                area.addEventListener('focus', function() {
+                area.addEventListener('focus', function () {
                     this.style.outline = '2px solid var(--accent-color)';
                 });
-                area.addEventListener('blur', function() {
+                area.addEventListener('blur', function () {
                     this.style.outline = 'none';
                 });
             });

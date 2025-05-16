@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Đăng nhập thành công!');
                 window.location.href = '/Home/index.html';
             } else {
-                alert('Đăng nhập thất bại: ' + data.error);
+                alert('Đăng nhập thất bại: ' + (data.message || data.error || 'Lỗi không xác định'));
             }
         } catch (error) {
             console.error('Lỗi khi đăng nhập:', error.message);

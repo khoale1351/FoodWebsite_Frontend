@@ -47,18 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             areas.forEach(area => {
                 const provinceId = area.getAttribute('href')?.split('/').pop()?.replace('.html', '');
-                const province = provinces.find(p => p.id.toLowerCase() === provinceId);
+                // Sửa lỗi: Chuyển p.id thành chuỗi và kiểm tra tồn tại
+                const province = provinces.find(p => p.id != null && String(p.id) === provinceId);
 
                 if (province) {
                     area.setAttribute('title', province.name);
                     area.setAttribute('data-tooltip', province.name);
                 }
 
-                area.addEventListener('mouseover', function(e) {
+                area.addEventListener('mouseover', function (e) {
                     const provinceName = this.getAttribute('title') || 'Không xác định';
                     const tooltip = document.createElement('div');
                     tooltip.className = 'tooltip';
-                    tooltip.textContent = `Khám phá ẩm-dan đặc sản ${provinceName}`;
+                    tooltip.textContent = `Khám phá ẩm thực ${provinceName}`;
                     tooltip.style.position = 'absolute';
                     tooltip.style.background = 'var(--primary-color)';
                     tooltip.style.color = '#fff';
@@ -74,10 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     area.addEventListener('mouseout', () => tooltip.remove());
                 });
 
-                area.addEventListener('focus', function() {
+                area.addEventListener('focus', function () {
                     this.style.outline = '2px solid var(--accent-color)';
                 });
-                area.addEventListener('blur', function() {
+                area.addEventListener('blur', function () {
                     this.style.outline = 'none';
                 });
             });
@@ -93,14 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const [specialties, provinces] = await Promise.all([
-                fetchAPI('/Specialties', {}, false), // Cập nhật thành /Specialties
+                fetchAPI('/Specialties', {}, false),
                 fetchAPI('/Provinces', {}, false)
             ]);
             let filteredData = specialties;
 
             if (region) {
                 filteredData = filteredData.filter(item => {
-                    const province = provinces.find(p => p.id === item.tinhThanhId);
+                    // Sửa lỗi: So sánh p.id và tinhThanhId dưới dạng chuỗi
+                    const province = provinces.find(p => p.id != null && String(p.id) === String(item.tinhThanhId));
                     return province && province.region === region;
                 });
             }
