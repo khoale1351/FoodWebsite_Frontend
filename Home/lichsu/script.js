@@ -9,21 +9,21 @@ function saveToHistory(dacSan) {
 
 // Gọi hàm này khi người dùng xem một món (ví dụ: trong trang chi tiết)
 // Giả sử bạn lấy được dữ liệu món từ API
-fetch('http://localhost:5151/api/DacSan/1', {
+fetch('http://localhost:7177/api/DacSan/1', {
     headers: {
         'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
     }
 })
-.then(response => response.json())
-.then(dacSan => {
-    saveToHistory({
-        id: dacSan.id,
-        name: dacSan.name,
-        description: dacSan.description,
-        image: dacSan.image || 'default-image.jpg', // Hình ảnh món, nếu API trả về
-        tinhThanhId: dacSan.tinhThanhId
+    .then(response => response.json())
+    .then(dacSan => {
+        saveToHistory({
+            id: dacSan.id,
+            name: dacSan.name,
+            description: dacSan.description,
+            image: dacSan.image || 'default-image.jpg', // Hình ảnh món, nếu API trả về
+            tinhThanhId: dacSan.tinhThanhId
+        });
     });
-});
 
 function clearHistory() {
     localStorage.removeItem('viewHistory');
@@ -36,7 +36,7 @@ document.querySelector('.history-container').insertAdjacentHTML('beforeend', `
 `);
 
 function saveToServerHistory(dacSanId) {
-    fetch('http://localhost:5151/api/History', {
+    fetch('http://localhost:7177/api/History', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

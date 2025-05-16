@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('password').value;
 
         try {
-            const response = await fetch('http://localhost:5151/api/Auth/Login', {
+            const response = await fetch('http://localhost:7177/api/Auth/Login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Đăng nhập thành công!');
                 window.location.href = '/Home/index.html';
             } else {
-                alert('Đăng nhập thất bại: ' + data.error);
+                alert('Đăng nhập thất bại: ' + (data.message || data.error || 'Lỗi không xác định'));
             }
         } catch (error) {
             console.error('Lỗi khi đăng nhập:', error.message);
