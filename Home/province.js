@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:5151/api';
+    const API_BASE_URL = 'http://localhost:7177/api';
 
     async function fetchAPI(endpoint) {
         const url = `${API_BASE_URL}${endpoint}`;
