@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bản Đồ Ẩm Thực Đặc Sản Việt Nam</title>
     <link rel="stylesheet" href="/Home/styles.css">
 </head>
+
 <body>
     <header>
         <div class="top-bar">
@@ -23,8 +25,8 @@
                     <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
                     <button type="submit">Tìm kiếm</button>
                 </form>
-            <!-- Bộ lọc tìm kiếm -->
-                <div class="filter-options">  
+                <!-- Bộ lọc tìm kiếm -->
+                <div class="filter-options">
                     <select name="region">
                         <option value="">Tất cả vùng</option>
                         <option value="MienBac">Miền Bắc</option>
@@ -38,7 +40,7 @@
                     </select>
                 </div>
             </div>
-        
+
             <!-- Đăng nhập/Đăng ký bên phải -->
             <div class="login-section right">
                 <a href="/dangnhap-dangky/dangnhap/login.html">Đăng nhập</a>
@@ -47,20 +49,26 @@
         </div>
 
         <h1>Khám phá ẩm thực đặc sản 63 tỉnh thành Việt Nam</h1>
-        <p>Trang web này là nơi bạn có thể tìm hiểu về các món ăn đặc trưng của từng tỉnh thành trên khắp đất nước Việt Nam. Hãy nhấp vào bản đồ để bắt đầu hành trình khám phá!</p>
+        <p>Trang web này là nơi bạn có thể tìm hiểu về các món ăn đặc trưng của từng tỉnh thành trên khắp đất nước Việt
+            Nam. Hãy nhấp vào bản đồ để bắt đầu hành trình khám phá!</p>
     </header>
-        <!-- Bản đồ Việt Nam -->
-        <div class="map-container">
-            <img src="/images/vietnam-map.png" usemap="#image-map" alt="Bản đồ Việt Nam">
-            <map name="image-map">
-                <area target="_self" alt="Lào Cai" title="Lào Cai" href="/chitietcactinh/MienBac/LaoCai/laocai.html" coords="223,58,272,71" shape="rect">
-                <area target="_self" alt="Hà Nội" title="Hà Nội" href="/chitietcactinh/MienBac/HaNoi/hanoi.html" coords="213,129,262,142" shape="rect">
-                <area target="_self" alt="Hồ Chí Minh" title="Hồ Chí Minh" href="/chitietcactinh/MienNam/HoChiMinh/hochiminh.html" coords="400,500,500,550" shape="rect">
-                <area target="_self" alt="Bắc Cạn" title="Bắc Cạn" href="/chitietcactinh/MienBac/BacKan/backan.html" coords="297,18,345,37" shape="rect">
-                <area target="_self" alt="Lai Châu" title="Lai Châu" href="/chitietcactinh/MienBac/LaiChau/laichau.html" coords="190,73,239,86" shape="rect">
-                <!-- Thêm các tỉnh khác tại đây -->
-            </map>
-        </div>
+    <!-- Bản đồ Việt Nam -->
+    <div class="map-container">
+        <img src="/images/vietnam-map.png" usemap="#image-map" alt="Bản đồ Việt Nam">
+        <map name="image-map">
+            <area target="_self" alt="Lào Cai" title="Lào Cai" href="/chitietcactinh/MienBac/LaoCai/laocai.html"
+                coords="223,58,272,71" shape="rect">
+            <area target="_self" alt="Hà Nội" title="Hà Nội" href="/chitietcactinh/MienBac/HaNoi/hanoi.html"
+                coords="213,129,262,142" shape="rect">
+            <area target="_self" alt="Hồ Chí Minh" title="Hồ Chí Minh"
+                href="/chitietcactinh/MienNam/HoChiMinh/hochiminh.html" coords="400,500,500,550" shape="rect">
+            <area target="_self" alt="Bắc Cạn" title="Bắc Cạn" href="/chitietcactinh/MienBac/BacKan/backan.html"
+                coords="297,18,345,37" shape="rect">
+            <area target="_self" alt="Lai Châu" title="Lai Châu" href="/chitietcactinh/MienBac/LaiChau/laichau.html"
+                coords="190,73,239,86" shape="rect">
+            <!-- Thêm các tỉnh khác tại đây -->
+        </map>
+    </div>
     </div>
 
     <!-- Top 3 món đặc sản -->
@@ -94,8 +102,10 @@
             <a href="https://twitter.com">Twitter</a>
         </div>
         <p>Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
-    </footer>  
+    </footer>
     <script src="/Home/index.js"></script>
     <script src="/Home/province.js"></script>
+    <script src="/Home/script.js"></script>
 </body>
+
 </html>

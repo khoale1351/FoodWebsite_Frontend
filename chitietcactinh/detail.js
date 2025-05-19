@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Gọi API để lấy chi tiết món ăn
-    fetch(`http://localhost:7177/api/Specialties/${foodId}`)
+    fetch(`http://localhost:5151/api/Specialties/${foodId}`)
         .then(response => {
             if (!response.ok) {
                 return response.text().then(text => {
