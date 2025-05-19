@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đặc Sản Lào Cai</title>
     <link rel="stylesheet" href="/Home/styles.css">
 </head>
+
 <body>
     <div class="top-bar">
         <div class="task-bar left">
@@ -14,15 +16,20 @@
                 <li><a href="/Home/lichsu/khampha.html">Khám phá</a></li>
             </ul>
         </div>
+
         <div class="search-bar">
             <form action="/Home/Timkiem/search.html" method="get">
                 <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
                 <button type="submit">Tìm kiếm</button>
             </form>
         </div>
-        <div class="login-section right">
-            <a href="/dangnhap-dangky/dangnhap/login.html">Đăng nhập</a>
-            <a href="/dangnhap-dangky/dangky/register.html">Đăng ký</a>
+        <div class="login-section right" id="login-section">
+            <a href="/dangnhap-dangky/dangnhap/login.html" id="login-link">Đăng nhập</a>
+            <a href="/dangnhap-dangky/dangky/register.html" id="register-link">Đăng ký</a>
+        </div>
+        <div class="user-info" id="user-info" style="display: none;">
+            <span id="username"></span>
+            <button id="logout-btn" class="auth-btn">Đăng xuất</button>
         </div>
     </div>
 
@@ -31,20 +38,7 @@
         <a href="/Home/index.html" class="back-button">Quay lại trang chủ</a>
     </header>
 
-    <div class="detail-container">
-        <!-- Hình ảnh và thông tin đặc sản -->
-        <div class="food-item" data-id="3">
-            <img src="/images/thit-trau-gac-bep.jpg" alt="Thịt trâu gác bếp">
-            <h2>Thịt trâu gác bếp</h2>
-            <p>Thịt trâu gác bếp là món ăn đặc trưng của người dân tộc vùng Tây Bắc, có hương vị đậm đà và độc đáo.</p>
-        </div>
 
-        <div class="food-item" data-id="4">
-            <img src="/images/banh-cuon.jpg" alt="Bánh cuốn">
-            <h2>Bánh cuốn</h2>
-            <p>Bánh cuốn Lào Cai được làm từ gạo, ăn kèm với chả lụa và nước chấm đặc biệt.</p>
-        </div>
-    </div>
 
     <footer>
         <div class="social-links">
@@ -55,10 +49,13 @@
         <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
     </footer>
 
-    
+
     <script src="/Home/index.js"></script>
     <script src="/Home/province.js"></script>
     <script src="/chitietcactinh/MienBac/LaoCai/laocai.js"></script>
-    
+    <script src="/Home/Timkiem/script.js"></script>
+
+
 </body>
+
 </html>

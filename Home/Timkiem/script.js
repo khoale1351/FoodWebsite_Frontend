@@ -1,4 +1,3 @@
-
 // Lấy tham số query từ URL
 const urlParams = new URLSearchParams(window.location.search);
 const query = urlParams.get('query') || '';
@@ -13,7 +12,12 @@ if (query) {
             'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Không tìm thấy đặc sản!');
+            }
+            return response.json();
+        })
         .then(data => {
             const searchList = document.getElementById('search-list');
             if (data.length === 0) {
@@ -32,7 +36,7 @@ if (query) {
         })
         .catch(error => {
             console.error('Lỗi khi tìm kiếm:', error);
-            document.getElementById('search-list').innerHTML = '<p>Có lỗi xảy ra khi tìm kiếm!</p>';
+            document.getElementById('search-list').innerHTML = '<p>Không tìm thấy!</p>';
         });
 } else {
     document.getElementById('search-list').innerHTML = '<p>Vui lòng nhập từ khóa tìm kiếm!</p>';

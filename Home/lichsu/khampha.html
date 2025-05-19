@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khám Phá - Lịch Sử Xem</title>
     <link rel="stylesheet" href="/Home/lichsu/styles.css">
+    <link rel="stylesheet" href="/Home/styles.css">
 </head>
 
 <body>
@@ -23,9 +24,13 @@
                 <button type="submit">Tìm kiếm</button>
             </form>
         </div>
-        <div class="login-section right">
-            <a href="/dangnhap-dangky/dangnhap/login.html">Đăng nhập</a>
-            <a href="/dangnhap-dangky/dangky/register.html">Đăng ký</a>
+        <div class="login-section right" id="login-section">
+            <a href="/dangnhap-dangky/dangnhap/login.html" id="login-link">Đăng nhập</a>
+            <a href="/dangnhap-dangky/dangky/register.html" id="register-link">Đăng ký</a>
+        </div>
+        <div class="user-info" id="user-info" style="display: none;">
+            <span id="username"></span>
+            <button id="logout-btn" class="auth-btn">Đăng xuất</button>
         </div>
     </div>
 
@@ -57,6 +62,8 @@
     </footer>
 
     <script src="/Home/lichsu/script.js"></script>
+    <script src="/Home/index.js"></script>
+    <script src="/Home/province.js"></script>
 </body>
 
 </html>
