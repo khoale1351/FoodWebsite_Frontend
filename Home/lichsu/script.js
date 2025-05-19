@@ -9,7 +9,7 @@ function saveToHistory(dacSan) {
 
 // Gọi hàm này khi người dùng xem một món (ví dụ: trong trang chi tiết)
 // Giả sử bạn lấy được dữ liệu món từ API
-fetch('http://localhost:7177/api/DacSan/1', {
+fetch('http://localhost:5151/api/DacSan/1', {
     headers: {
         'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
     }
@@ -36,7 +36,7 @@ document.querySelector('.history-container').insertAdjacentHTML('beforeend', `
 `);
 
 function saveToServerHistory(dacSanId) {
-    fetch('http://localhost:7177/api/History', {
+    fetch('http://localhost:5151/api/History', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 
 const provinceId = 'laocai';
-const API_BASE_URL = 'http://localhost:7177/api';
+const API_BASE_URL = 'http://localhost:5151/api';
 
 // Hàm gọi API với xử lý lỗi
 async function fetchAPI(endpoint, options = {}) {

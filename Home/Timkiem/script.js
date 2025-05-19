@@ -8,7 +8,7 @@ document.getElementById('search-query').textContent = query;
 
 // Tìm kiếm và hiển thị kết quả
 if (query) {
-    fetch(`http://localhost:7177/api/DacSan?query=${encodeURIComponent(query)}`, {
+    fetch(`http://localhost:5151/api/DacSan?query=${encodeURIComponent(query)}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
