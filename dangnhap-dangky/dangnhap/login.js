@@ -1,33 +1,30 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
-    if (!loginForm) {
-        console.error('Không tìm thấy form đăng nhập');
-        return;
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.login-form');
+    if (!form) return;
 
-    loginForm.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async function (e) {
         e.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const email = form.email.value;
+        const password = form.password.value;
 
         try {
-            const response = await fetch('http://localhost:5151/api/Auth/Login', {
+            const response = await fetch('http://localhost:5151/api/Auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ email, password })
             });
-            const data = await response.json();
 
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                alert('Đăng nhập thành công!');
-                window.location.href = '/Home/index.html';
-            } else {
-                alert('Đăng nhập thất bại: ' + (data.message || data.error || 'Lỗi không xác định'));
+            if (!response.ok) {
+                const errorText = await response.text();
+                alert('Đăng nhập thất bại: ' + errorText);
+                return;
             }
-        } catch (error) {
-            console.error('Lỗi khi đăng nhập:', error.message);
-            alert('Lỗi kết nối. Vui lòng thử lại.');
+
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            window.location.href = '/Home/index.html';
+        } catch (err) {
+            alert('Có lỗi khi đăng nhập!');
         }
     });
 });

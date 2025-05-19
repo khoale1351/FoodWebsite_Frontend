@@ -1,3 +1,72 @@
+document.addEventListener('DOMContentLoaded', async function () {
+    const token = localStorage.getItem('token');
+    console.log('Token:', token);
+    const loginSection = document.getElementById('login-section');
+    const userInfoDiv = document.getElementById('user-info');
+    const loginLink = document.getElementById('login-link');
+    const registerLink = document.getElementById('register-link');
+
+    // Ẩn/hiển thị login-section
+    if (token && loginSection) {
+        loginSection.style.display = 'none';
+        console.log('Đã ẩn login-section do có token');
+    } else if (loginSection) {
+        loginSection.style.display = 'flex';
+        console.log('Hiển thị login-section do không có token');
+    }
+
+    // Hiển thị thông tin tài khoản và nút Đăng xuất
+    if (token && userInfoDiv) {
+        try {
+            const response = await fetch('http://localhost:5151/api/Auth/profile', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            console.log('Response status:', response.status);
+            if (response.ok) {
+                const profile = await response.json();
+                console.log('Profile:', profile);
+                userInfoDiv.innerHTML = `
+                    <span>Chào, <b>${profile.fullName || profile.username || profile.email || 'Người dùng'}</b></span>
+                    <button id="logout-btn" class="auth-btn" type="button">Đăng xuất</button>
+                `;
+                userInfoDiv.style.display = 'flex';
+                // Đảm bảo nút logout-btn tồn tại trước khi gắn sự kiện
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    console.log('Đã tìm thấy logout-btn, gắn sự kiện click');
+                    logoutBtn.removeEventListener('click', handleLogout);
+                    logoutBtn.addEventListener('click', handleLogout);
+                } else {
+                    console.error('Không tìm thấy logout-btn sau khi render');
+                }
+            } else {
+                console.log('API profile thất bại:', response.status);
+                userInfoDiv.style.display = 'none';
+                loginSection.style.display = 'flex';
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy profile:', error);
+            userInfoDiv.style.display = 'none';
+            loginSection.style.display = 'flex';
+        }
+    } else if (userInfoDiv) {
+        userInfoDiv.style.display = 'none';
+        console.log('userInfoDiv không tìm thấy hoặc không có token');
+    }
+
+    // Hàm xử lý đăng xuất
+    function handleLogout() {
+        console.log('Nút Đăng xuất được bấm');
+        localStorage.removeItem('token');
+        localStorage.removeItem('viewHistory');
+        loginSection.style.display = 'flex';
+        userInfoDiv.style.display = 'none';
+        loginLink.style.display = 'inline';
+        registerLink.style.display = 'inline';
+        console.log('Đã đăng xuất');
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname !== '/Home/index.html') {
         console.warn('index.js chỉ chạy trên /Home/index.html');
@@ -28,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 if (response.status === 401 && requireAuth) {
                     localStorage.removeItem('token');
+                    localStorage.removeItem('viewHistory');
                     alert('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.');
                     window.location.href = '/dangnhap-dangky/dangnhap/login.html';
                 }
@@ -42,12 +112,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initMap() {
         try {
-            const provinces = await fetchAPI('/Provinces', {}, false);
+            const response = await fetchAPI('/Provinces');
+            const provinces = Array.isArray(response)
+                ? response
+                : (Array.isArray(response.data) ? response.data : Object.values(response));
             const areas = document.querySelectorAll('area');
 
             areas.forEach(area => {
                 const provinceId = area.getAttribute('href')?.split('/').pop()?.replace('.html', '');
-                // Sửa lỗi: Chuyển p.id thành chuỗi và kiểm tra tồn tại
                 const province = provinces.find(p => p.id != null && String(p.id) === provinceId);
 
                 if (province) {
@@ -56,6 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 area.addEventListener('mouseover', function (e) {
+                    // Xóa tooltip cũ nếu có
+                    const existingTooltip = document.querySelector('.tooltip');
+                    if (existingTooltip) {
+                        existingTooltip.remove();
+                    }
+
                     const provinceName = this.getAttribute('title') || 'Không xác định';
                     const tooltip = document.createElement('div');
                     tooltip.className = 'tooltip';
@@ -65,14 +143,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     tooltip.style.color = '#fff';
                     tooltip.style.padding = '5px 10px';
                     tooltip.style.borderRadius = '5px';
+                    tooltip.style.zIndex = '50'; // Đảm bảo không che nút đăng xuất
                     document.body.appendChild(tooltip);
 
-                    area.addEventListener('mousemove', e => {
+                    area.addEventListener('mousemove', function handler(e) {
                         tooltip.style.left = `${e.pageX + 10}px`;
                         tooltip.style.top = `${e.pageY + 10}px`;
                     });
 
-                    area.addEventListener('mouseout', () => tooltip.remove());
+                    area.addEventListener('mouseout', () => {
+                        tooltip.remove();
+                    }, { once: true }); // Đảm bảo sự kiện chỉ chạy một lần
                 });
 
                 area.addEventListener('focus', function () {
@@ -101,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (region) {
                 filteredData = filteredData.filter(item => {
-                    // Sửa lỗi: So sánh p.id và tinhThanhId dưới dạng chuỗi
                     const province = provinces.find(p => p.id != null && String(p.id) === String(item.tinhThanhId));
                     return province && province.region === region;
                 });
