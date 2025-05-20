@@ -1,16 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    if (!registerForm) {
-        console.error('Không tìm thấy form đăng ký');
-        return;
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.register-form');
+    if (!form) return;
 
-    registerForm.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async function (e) {
         e.preventDefault();
-        const username = document.getElementById('username').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
+        const username = form.username.value;
+        const fullName = form.fullname.value;
+        const email = form.email.value;
+        const phoneNumber = form.phonenumber.value;
+        const password = form.password.value;
+        const confirmPassword = form['confirm-password'].value;
 
         if (password !== confirmPassword) {
             alert('Mật khẩu xác nhận không khớp!');
@@ -18,22 +17,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5151/api/Auth/Register', {
+            const response = await fetch('http://localhost:5151/api/Auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password }),
+                body: JSON.stringify({
+                    username,
+                    fullName,
+                    email,
+                    phoneNumber,
+                    password
+                })
             });
-            const data = await response.json();
 
-            if (response.ok) {
-                alert('Đăng ký thành công! Vui lòng đăng nhập.');
-                window.location.href = '/dangnhap-dangky/dangnhap/login.html';
-            } else {
-                alert('Đăng ký thất bại: ' + (data.message || data.error || 'Lỗi không xác định'));
+            if (!response.ok) {
+                const errorText = await response.text();
+                alert('Đăng ký thất bại: ' + errorText);
+                return;
             }
-        } catch (error) {
-            console.error('Lỗi khi đăng ký:', error.message);
-            alert('Lỗi kết nối. Vui lòng thử lại.');
+
+            alert('Đăng ký thành công!');
+            window.location.href = '/dangnhap-dangky/dangnhap/login.html';
+        } catch (err) {
+            alert('Đăng ký thất bại !');
         }
     });
 });

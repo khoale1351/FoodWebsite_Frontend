@@ -22,7 +22,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function initMapProvinces() {
         try {
-            const provinces = await fetchAPI('/Provinces');
+            const response = await fetchAPI('/Provinces');
+            console.log('API /Provinces trả về:', response);
+
+            // Nếu response là object có thuộc tính 'data' là array
+            let provinces;
+            if (Array.isArray(response)) {
+                provinces = response;
+            } else if (Array.isArray(response.data)) {
+                provinces = response.data;
+            } else {
+                provinces = Object.values(response);
+            }
+            console.log('provinces:', provinces);
+
             const areas = document.querySelectorAll('area');
 
             areas.forEach(area => {

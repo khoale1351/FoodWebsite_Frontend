@@ -42,15 +42,22 @@
             </div>
 
             <!-- Đăng nhập/Đăng ký bên phải -->
-            <div class="login-section right">
-                <a href="/dangnhap-dangky/dangnhap/login.html">Đăng nhập</a>
-                <a href="/dangnhap-dangky/dangky/register.html">Đăng ký</a>
+            <div class="login-section right" id="login-section">
+                <a href="/dangnhap-dangky/dangnhap/login.html" id="login-link">Đăng nhập</a>
+                <a href="/dangnhap-dangky/dangky/register.html" id="register-link">Đăng ký</a>
+            </div>
+            <div class="user-info" id="user-info" style="display: none;">
+                <span id="username"></span>
+                <button id="logout-btn" class="auth-btn">Đăng xuất</button>
             </div>
         </div>
 
+        <!-- Tiêu đề trang -->
         <h1>Khám phá ẩm thực đặc sản 63 tỉnh thành Việt Nam</h1>
-        <p>Trang web này là nơi bạn có thể tìm hiểu về các món ăn đặc trưng của từng tỉnh thành trên khắp đất nước Việt
+        <p>Trang web này là nơi bạn có thể tìm hiểu về các món ăn đặc trưng của từng tỉnh thành trên khắp đất nước
+            Việt
             Nam. Hãy nhấp vào bản đồ để bắt đầu hành trình khám phá!</p>
+
     </header>
     <!-- Bản đồ Việt Nam -->
     <div class="map-container">
@@ -74,6 +81,9 @@
     <!-- Top 5 món đặc sản dạng slide -->
     <div class="top-specialties">
         <h2>Top 5 Món Đặc Sản Được Tìm Kiếm Nhiều Nhất Hôm Nay</h2>
+        <ul id="top-searches-list">
+            <li>Đang tải...</li>
+        </ul>
         <div class="slider-container">
             <div class="slider" id="specialty-slider">
                 <!-- Mỗi món đặc sản là một slide-item -->
