@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('token');
+    // Ẩn log/info, chỉ giữ lại warn/error
+    console.log = function () { };
+    console.info = function () { };
     console.log('Token:', token);
     const loginSection = document.getElementById('login-section');
     const userInfoDiv = document.getElementById('user-info');
@@ -68,12 +71,45 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    const loginSection = document.getElementById('login-section');
+    const userInfo = document.getElementById('user-info');
+    if (token) {
+        // Đã đăng nhập
+        loginSection.style.display = 'none';
+        userInfo.style.display = 'block';
+        // Lấy tên user từ token hoặc API
+        fetch('http://localhost:5151/api/Auth/profile', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        .then(res => {
+            if (!res.ok) throw new Error('Unauthorized');
+            return res.json();
+        })
+        .then(data => {
+            const usernameEl = document.getElementById('username');
+            if (usernameEl) usernameEl.textContent = data.fullName || data.email;
+        })
+        .catch(err => {
+            // Có thể ẩn thông tin user hoặc hiển thị thông báo
+        });
+    } else {
+        // Chưa đăng nhập
+        loginSection.style.display = 'block';
+        userInfo.style.display = 'none';
+    }
+    // Đăng xuất
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        location.reload();
+    });
+
     if (window.location.pathname !== '/Home/index.html') {
         console.warn('index.js chỉ chạy trên /Home/index.html');
         return;
     }
 
-    const token = localStorage.getItem('token');
+
     const API_BASE_URL = 'http://localhost:5151/api';
 
     async function fetchAPI(endpoint, options = {}, requireAuth = false) {

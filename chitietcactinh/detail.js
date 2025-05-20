@@ -1,37 +1,51 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const foodId = urlParams.get('foodId');
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
 
-    console.log('foodId:', foodId);
-
-    const foodTitle = document.getElementById('food-title');
-    const foodImage = document.getElementById('food-image');
-    const foodDescription = document.getElementById('food-description');
-
-    if (!foodId) {
+    if (!id) {
+        const foodTitle = document.getElementById('food-title');
         if (foodTitle) foodTitle.textContent = 'Không tìm thấy món ăn';
         return;
     }
 
-    fetch(`http://localhost:5151/api/Specialties/${foodId}`)
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => {
-                    throw new Error(`Lỗi ${response.status}: ${response.statusText} - ${text}`);
+    fetch(`http://localhost:5151/api/Specialties/${id}`)
+        .then(res => {
+            if (!res.ok) {
+                return res.text().then(text => {
+                    throw new Error(`Lỗi ${res.status}: ${res.statusText} - ${text}`);
                 });
             }
-            return response.json();
+            return res.json();
         })
-        .then(food => {
-            if (foodTitle) foodTitle.textContent = food.name;
-            if (foodImage) {
-                foodImage.src = food.specialtyImages?.[0]?.imageUrl || '/images/placeholder.jpg';
-                foodImage.alt = food.name;
+        .then(data => {
+            document.getElementById('specialty-detail').innerHTML = `
+                <h2>${data.name}</h2>
+                <img src="${data.imageUrl}" alt="${data.name}">
+                <p>${data.description}</p>
+            `;
+
+            // Lưu lịch sử nếu đã đăng nhập
+            const token = localStorage.getItem('token');
+            if (token) {
+                fetch('http://localhost:5151/api/UserHistory', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        specialtyId: data.id,
+                        name: data.name,
+                        image: data.imageUrl,
+                        description: data.description,
+                        provinceId: data.provinceId
+                    })
+                });
             }
-            if (foodDescription) foodDescription.textContent = food.description || 'Không có mô tả';
         })
         .catch(error => {
             console.error('Error fetching food details:', error);
+            const foodTitle = document.getElementById('food-title');
             if (foodTitle) foodTitle.textContent = 'Không tìm thấy món ăn';
         });
 });
