@@ -1,61 +1,66 @@
 <!DOCTYPE html>
 <html lang="vi">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chi Tiết Món Ăn</title>
-    <link rel="stylesheet" href="/Home/styles.css">
-</head>
+    <link rel="stylesheet" href="/Home/styles.css" />
+  </head>
 
-<body>
+  <body>
     <div class="top-bar">
-        <div class="task-bar left">
-            <ul>
-                <li><a href="/Home/index.html">Trang chủ</a></li>
-                <li><a href="/Home/lichsu/khampha.html">Khám phá</a></li>
-            </ul>
-        </div>
+      <div class="task-bar left">
+        <ul>
+          <li><a href="/Home/index.html">Trang chủ</a></li>
+          <li><a href="/Home/lichsu/khampha.html">Khám phá</a></li>
+        </ul>
+      </div>
 
-        <div class="search-bar">
-            <form action="/Home/Timkiem/search.html" method="get">
-                <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
-                <button type="submit">Tìm kiếm</button>
-            </form>
-        </div>
-        <div class="login-section right" id="login-section">
-            <a href="/dangnhap-dangky/dangnhap/login.html" id="login-link">Đăng nhập</a>
-            <a href="/dangnhap-dangky/dangky/register.html" id="register-link">Đăng ký</a>
-        </div>
-        <div class="user-info" id="user-info" style="display: none;">
-            <span id="username"></span>
-            <button id="logout-btn" class="auth-btn">Đăng xuất</button>
-        </div>
+      <div class="search-bar">
+        <form action="/Home/Timkiem/search.html" method="get">
+          <input
+            type="text"
+            name="query"
+            placeholder="Tìm kiếm đặc sản..."
+            aria-label="Tìm kiếm"
+          />
+          <button type="submit">Tìm kiếm</button>
+        </form>
+      </div>
+      <div class="login-section right" id="login-section">
+        <a href="/dangnhap-dangky/dangnhap/login.html" id="login-link"
+          >Đăng nhập</a
+        >
+        <a href="/dangnhap-dangky/dangky/register.html" id="register-link"
+          >Đăng ký</a
+        >
+      </div>
+      <div class="user-info" id="user-info" style="display: none">
+        <span id="username"></span>
+        <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+      </div>
     </div>
 
     <header>
-        <h1>Chi Tiết Món Ăn</h1>
+      <h1>Chi Tiết Món Ăn</h1>
     </header>
 
-    <section class="detail-content">
-        <h2 id="food-title"></h2>
-        <img id="food-image" src="" alt="Hình ảnh món ăn">
-        <p id="food-description"></p>
-    </section>
+    <main>
+      <div id="specialty-detail"></div>
+    </main>
 
     <footer>
-        <div class="social-links">
-            <a href="https://facebook.com">Facebook</a>
-            <a href="https://instagram.com">Instagram</a>
-            <a href="https://twitter.com">Twitter</a>
-        </div>
-        <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+      <div class="social-links">
+        <a href="https://facebook.com">Facebook</a>
+        <a href="https://instagram.com">Instagram</a>
+        <a href="https://twitter.com">Twitter</a>
+      </div>
+      <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
     </footer>
 
     <script src="/chitietcactinh/detail.js"></script>
     <script src="/Home/index.js"></script>
     <script src="/Home/province.js"></script>
-
-</body>
-
+    <script src="detail.js"></script>
+  </body>
 </html>
