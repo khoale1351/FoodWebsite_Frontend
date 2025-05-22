@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bản Đồ Ẩm Thực Đặc Sản Việt Nam</title>
+    <link rel="stylesheet" href="/Home/styles.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="top-bar">
+            <!-- Thanh điều hướng bên trái -->
+            <nav class="task-bar left">
+                <ul>
+                    <li><a href="/Home/index.html">Trang chủ</a></li>
+                    <li><a href="/Home/lichsu/khampha.html">Khám phá</a></li>
+                </ul>
+            </nav>
+
+            <!-- Thanh tìm kiếm ở giữa -->
+            <div class="search-bar">
+                <form action="/Home/Timkiem/search.html" method="get">
+                    <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+                <!-- Bộ lọc tìm kiếm -->
+                <div class="filter-options">
+                    <select name="region">
+                        <option value="">Tất cả vùng</option>
+                        <option value="MienBac">Miền Bắc</option>
+                        <option value="MienTrung">Miền Trung</option>
+                        <option value="MienNam">Miền Nam</option>
+                    </select>
+                    <select name="type">
+                        <option value="">Tất cả loại</option>
+                        <option value="mon-chinh">Món chính</option>
+                        <option value="mon-phu">Món phụ</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Đăng nhập/Đăng ký bên phải -->
+            <div class="login-section right" id="login-section">
+                <a href="/dangnhap-dangky/dangnhap/login.html" id="login-link">Đăng nhập</a>
+                <a href="/dangnhap-dangky/dangky/register.html" id="register-link">Đăng ký</a>
+            </div>
+            <div class="user-info" id="user-info" style="display: none;">
+                <span id="username"></span>
+                <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+            </div>
+        </div>
+
+        <!-- Tiêu đề trang -->
+        <h1>Khám phá ẩm thực đặc sản 63 tỉnh thành Việt Nam</h1>
+        <p>Trang web này là nơi bạn có thể tìm hiểu về các món ăn đặc trưng của từng tỉnh thành trên khắp đất nước
+            Việt
+            Nam. Hãy nhấp vào bản đồ để bắt đầu hành trình khám phá!</p>
+
+    </header>
+    <!-- Bản đồ Việt Nam -->
+    <div class="map-container">
+        <img src="/images/vietnam-map.png" usemap="#image-map" alt="Bản đồ Việt Nam">
+        <map name="image-map">
+            <area target="_self" alt="Lào Cai" title="Lào Cai" href="/chitietcactinh/MienBac/LaoCai/laocai.html"
+                coords="223,58,272,71" shape="rect">
+            <area target="_self" alt="Hà Nội" title="Hà Nội" href="/chitietcactinh/MienBac/HaNoi/hanoi.html"
+                coords="213,129,262,142" shape="rect">
+            <area target="_self" alt="Hồ Chí Minh" title="Hồ Chí Minh"
+                href="/chitietcactinh/MienNam/HoChiMinh/hochiminh.html" coords="400,500,500,550" shape="rect">
+            <area target="_self" alt="Bắc Cạn" title="Bắc Cạn" href="/chitietcactinh/MienBac/BacKan/backan.html"
+                coords="297,18,345,37" shape="rect">
+            <area target="_self" alt="Lai Châu" title="Lai Châu" href="/chitietcactinh/MienBac/LaiChau/laichau.html"
+                coords="190,73,239,86" shape="rect">
+            <!-- Thêm các tỉnh khác tại đây -->
+        </map>
+    </div>
+    </div>
+
+    <!-- Top 5 món đặc sản dạng slide -->
+    <div class="top-specialties">
+        <h2>Top 5 Món Đặc Sản Được Tìm Kiếm Nhiều Nhất Hôm Nay</h2>
+        <ul id="top-searches-list">
+            <li>Đang tải...</li>
+        </ul>
+        <div class="slider-container">
+            <div class="slider" id="specialty-slider">
+                <!-- Mỗi món đặc sản là một slide-item -->
+                <div class="slide-item">Phở Hà Nội</div>
+                <div class="slide-item">Bún Bò Huế</div>
+                <div class="slide-item">Cao Lầu Hội An</div>
+                <div class="slide-item">Bánh Xèo Miền Trung</div>
+                <div class="slide-item">Cơm Tấm Sài Gòn</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Đánh Giá Từ Người Dùng -->
+    <section class="testimonials">
+        <h2>Đánh giá từ người dùng</h2>
+        <div class="testimonial-list">
+            <div class="testimonial-item">
+                <p>"Trang web rất hữu ích, giúp tôi khám phá nhiều món ăn ngon!"</p>
+                <p class="author">- Nguyễn Văn A</p>
+            </div>
+            <div class="testimonial-item">
+                <p>"Thông tin chi tiết và dễ hiểu, cảm ơn đội ngũ phát triển!"</p>
+                <p class="author">- Trần Thị B</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://instagram.com">Instagram</a>
+            <a href="https://twitter.com">Twitter</a>
+        </div>
+        <p>Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+    </footer>
+    <script src="/Home/index.js"></script>
+    <script src="/Home/province.js"></script>
+</body>
+
+</html>

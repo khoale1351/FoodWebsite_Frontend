@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặc Sản Lào Cai</title>
+    <link rel="stylesheet" href="/Home/styles.css">
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="task-bar left">
+            <ul>
+                <li><a href="/Home/index.html">Trang chủ</a></li>
+                <li><a href="/Home/lichsu/khampha.html">Khám phá</a></li>
+            </ul>
+        </div>
+
+        <div class="search-bar">
+            <form action="/Home/Timkiem/search.html" method="get">
+                <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+        <div class="login-section right" id="login-section">
+            <a href="/dangnhap-dangky/dangnhap/login.html" id="login-link">Đăng nhập</a>
+            <a href="/dangnhap-dangky/dangky/register.html" id="register-link">Đăng ký</a>
+        </div>
+        <div class="user-info" id="user-info" style="display: none;">
+            <span id="username"></span>
+            <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>Đặc Sản Lào Cai</h1>
+        <a href="/Home/index.html" class="back-button">Quay lại trang chủ</a>
+    </header>
+
+    <main>
+        <h2>Đặc sản Lào Cai</h2>
+        <div id="specialties-list"></div>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://instagram.com">Instagram</a>
+            <a href="https://twitter.com">Twitter</a>
+        </div>
+        <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+    </footer>
+
+
+    <script src="/Home/index.js"></script>
+    <script src="/Home/province.js"></script>
+    <script src="/chitietcactinh/MienBac/LaoCai/laocai.js"></script>
+    <script src="/Home/Timkiem/script.js"></script>
+
+
+</body>
+
+</html>
