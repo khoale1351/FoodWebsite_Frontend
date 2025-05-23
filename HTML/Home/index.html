@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ẩm Thực Đặc Sản Việt Nam</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Ẩm Thực Đặc Sản Việt Nam</h1>
+        <p>Khám phá những món ăn đặc sản độc đáo từ khắp mọi miền đất nước.</p>
+    </header>
+
+    <div class="top-bar">
+        <div class="task-bar left">
+            <ul>
+                <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
+                <li><a href="/HTML/Lich su/khampha.html">Khám phá</a></li>
+            </ul>
+        </div>
+        <div class="search-bar">
+            <form action="/HTML/Tim kiem/search.html" method="get">
+                <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+        <div class="login-section right" id="login-section">
+            <a href="/HTML/Login-Register/login.html" class="auth-btn">Đăng nhập</a>
+            <a href="/HTML/Login-Register/register.html" class="auth-btn">Đăng ký</a>
+        </div>
+        <div class="user-info" id="user-info" style="display: none;">
+            <span id="username"></span>
+            <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+        </div>
+    </div>
+
+    <div class="filter-bar flex justify-center my-4">
+        <select name="region" id="region-filter" class="px-4 py-2 border rounded">
+            <option value="">Chọn vùng miền</option>
+            <option value="Miền Bắc">Miền Bắc</option>
+            <option value="Miền Trung">Miền Trung</option>
+            <option value="Miền Nam">Miền Nam</option>
+        </select>
+        <select name="type" id="type-filter" class="px-4 py-2 border rounded ml-2">
+            <option value="">Chọn loại</option>
+            <option value="Món ăn">Món ăn</option>
+            <option value="Đồ uống">Đồ uống</option>
+            <option value="Tráng miệng">Tráng miệng</option>
+        </select>
+    </div>
+
+
+
+    <div class="map-container content-container">
+        <img src="/IMAGES/vietnam-map.png" alt="Bản đồ Việt Nam" usemap="#vietnam-map" class="map-image">
+        <map name="vietnam-map">
+            <area target="_self" alt="Lào Cai" title="Lào Cai" href="/chitietcactinh/MienBac/LaoCai/laocai.html"
+                coords="223,58,272,71" shape="rect" data-tooltip="Lào Cai">
+            <area target="_self" alt="Hà Nội" title="Hà Nội" href="/chitietcactinh/MienBac/HaNoi/hanoi.html"
+                coords="213,129,262,142" shape="rect" data-tooltip="Hà Nội">
+            <area target="_self" alt="Hồ Chí Minh" title="Hồ Chí Minh"
+                href="/chitietcactinh/MienNam/HoChiMinh/hochiminh.html" coords="400,500,500,550" shape="rect"
+                data-tooltip="Hồ Chí Minh">
+            <area target="_self" alt="Bắc Kạn" title="Bắc Kạn" href="/chitietcactinh/MienBac/BacKan/backan.html"
+                coords="297,18,345,37" shape="rect" data-tooltip="Bắc Kạn">
+            <area target="_self" alt="Lai Châu" title="Lai Châu" href="/chitietcactinh/MienBac/LaiChau/laichau.html"
+                coords="190,73,239,86" shape="rect" data-tooltip="Lai Châu">
+            <area target="_self" alt="Vĩnh Phúc" title="Vĩnh Phúc" href="/chitietcactinh/MienBac/VinhPhuc/vinhphuc.html"
+                coords="186,127,248,117" shape="rect" data-tooltip="Vĩnh Phúc">
+            <area target="_self" alt="Điện Biên" title="Điện Biên" href="/chitietcactinh/MienBac/DienBien/dienbien.html"
+                coords="183,114,244,100" shape="rect" data-tooltip="Điện Biên">
+            <area target="_self" alt="Yên Bái" title="Yên Bái" href="/chitietcactinh/MienBac/YenBai/yenbai.html"
+                coords="230,58,291,44" shape="rect" data-tooltip="Yên Bái">
+            <area target="_self" alt="Hà Giang" title="Hà Giang" href="/chitietcactinh/MienBac/HaGiang/hagiang.html"
+                coords="411,44,456,24" shape="rect" data-tooltip="Hà Giang">
+            <area target="_self" alt="Tuyên Quang" title="Tuyên Quang"
+                href="/chitietcactinh/MienBac/TuyenQuang/tuyenquang.html" coords="417,61,480,46" shape="rect"
+                data-tooltip="Tuyên Quang">
+            <area target="_self" alt="Cao Bằng" title="Cao Bằng" href="/chitietcactinh/MienBac/CaoBang/caobang.html"
+                coords="469,71,533,57" shape="rect" data-tooltip="Cao Bằng">
+
+
+
+        </map>
+
+    </div>
+
+    <div class="content-container my-6">
+        <h2 class="text-xl font-bold mb-2">Món ăn nổi bật</h2>
+        <div id="featured-recipes" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+        <!-- Top 5 món được xem nhiều nhất -->
+        <div class="content-container my-6" id="top-recipes-section">
+            <h2 class="text-xl font-bold mb-2">Top 5 món được xem nhiều nhất</h2>
+            <ul id="top-recipes-list" class="list-disc pl-5"></ul>
+        </div>
+
+        <div class="testimonials content-container">
+            <h2>Đánh giá từ người dùng</h2>
+            <div id="testimonial-list"></div>
+        </div>
+
+
+        <footer>
+            <div class="social-links">
+                <a href="https://facebook.com">Facebook</a>
+                <a href="https://instagram.com">Instagram</a>
+                <a href="https://twitter.com">Twitter</a>
+            </div>
+            <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+        </footer>
+
+        <script src="/JS/Home/index.js"></script>
+        <script src="/JS/Home/province.js"></script>
+        <script src="/JS/fetchAPI.js"></script>
+</body>
+
+</html>
