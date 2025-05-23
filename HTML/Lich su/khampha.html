@@ -32,10 +32,10 @@
         </form>
       </div>
       <div class="login-section right" id="login-section">
-        <a href="/HTML/Login-Register/Dang nhap/login.html" class="auth-btn"
+        <a href="/HTML/Dangnhap-Dangky/Dang nhap/login.html" class="auth-btn"
           >Đăng nhập</a
         >
-        <a href="/HTML/Login-Register/Dang ky/register.html" class="auth-btn"
+        <a href="/HTML/Dangnhap-Dangky/Dang ky/register.html" class="auth-btn"
           >Đăng ký</a
         >
       </div>
@@ -57,50 +57,6 @@
         Xóa Lịch Sử
       </button>
     </div>
-
-    <script>
-      const token = localStorage.getItem("token");
-      if (token) {
-        fetch("http://localhost:5151/api/Auth/profile", {
-          headers: { Authorization: "Bearer " + token },
-        })
-          .then((res) => (res.ok ? res.json() : Promise.reject("Lỗi xác thực")))
-          .then((user) => {
-            // Sử dụng endpoint đúng, ví dụ:
-            return fetch(
-              `http://localhost:5151/api/UserViewHistory/${user.id}`,
-              {
-                headers: { Authorization: "Bearer " + token },
-              }
-            );
-          })
-          .then(async (res) => {
-            if (!res.ok) throw new Error("Không có lịch sử");
-            const text = await res.text();
-            if (!text) return [];
-            return JSON.parse(text);
-          })
-          .then((data) => {
-            document.getElementById("history-list").innerHTML = data.length
-              ? data
-                  .map(
-                    (item) =>
-                      `<div>${
-                        item.specialtyName || item.recipeName || "Không rõ"
-                      }</div>`
-                  )
-                  .join("")
-              : "<div>Bạn chưa có lịch sử xem nào.</div>";
-          })
-          .catch((err) => {
-            document.getElementById("history-list").innerText =
-              err.message || err;
-          });
-      } else {
-        document.getElementById("history-list").innerText =
-          "Bạn cần đăng nhập để xem lịch sử!";
-      }
-    </script>
 
     <footer>
       <div class="social-links">
