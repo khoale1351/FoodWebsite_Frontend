@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => {
                 console.error('Lỗi khi tải chi tiết:', error.message);
-                document.getElementById('specialty-detail').innerHTML = '<p>Không tải được chi tiết!</p>';
+                document.getElementById('specialty-detail').innerHTML = `<p>Không tải được chi tiết!<br>${error.message}</p>`;
             });
     } else {
         document.getElementById('specialty-detail').innerHTML = '<p>Không tìm thấy món ăn!</p>';

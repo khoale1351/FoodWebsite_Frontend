@@ -45,14 +45,17 @@ if (query) {
                 return;
             }
 
-            searchList.innerHTML = filtered.map(item => `
-                <div class="search-item">
-                    <img src="${item.image || 'default-image.jpg'}" alt="${item.name}">
-                    <h3>${item.name}</h3>
-                    <p>${item.description}</p>
-                    <a href="/chitietcactinh/${item.tinhThanhId}.html">Xem chi tiết</a>
-                </div>
-            `).join('');
+            searchList.innerHTML = filtered.map(item => {
+                const detailLink = item.id ? `/HTML/chi tiet mon an/detail.html?id=${item.id}` : '#';
+                return `
+                    <div class="search-item">
+                        <img src="${item.image || 'default-image.jpg'}" alt="${item.name}">
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <a href="${detailLink}">${item.id ? 'Xem chi tiết' : 'Không có link'}</a>
+                    </div>
+                `;
+            }).join('');
         })
         .catch(error => {
             console.error('Lỗi khi tìm kiếm:', error);
