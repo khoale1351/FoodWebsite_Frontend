@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const list = document.getElementById('specialties-list');
             
             if (Array.isArray(data)) {
-                // Bước 1: Lọc theo provinceId
+                // Bước 1: Lọc theo provinceId (có thể bỏ nếu API đã filter)
                 const filteredData = data.filter(item => item.provinceId === 1);
                 
-                // Bước 2: Loại bỏ các mục trùng lặp bằng cách kiểm tra ID
-                const uniqueData = filteredData.reduce((acc, current) => {
-                    if (!acc.find(item => item.id === current.id)) {
-                        acc.push(current);
-                    }
-                    return acc;
-                }, []);
+                // Bước 2: Loại bỏ các mục trùng lặp bằng tên
+                const seenNames = new Set();
+                const uniqueData = filteredData.filter(item => {
+                    if (seenNames.has(item.name)) return false;
+                    seenNames.add(item.name);
+                    return true;
+                });
                 
                 // Render kết quả
                 list.innerHTML = uniqueData.map(item => `
