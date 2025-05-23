@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký - Ẩm Thực Đặc Sản Việt Nam</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/register-styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-center">
+            <h1>Đăng Ký</h1>
+            <a href="/HTML/Home/index.html" class="back-button">Quay lại trang chủ</a>
+        </div>
+    </header>
+
+    <div class="register-container">
+        <form class="register-form">
+            <h2>Tạo tài khoản mới</h2>
+            <p id="error-message" class="text-red-500 hidden mb-4"></p>
+            <div class="form-group">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="fullname">Họ và tên</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phonenumber">Số điện thoại</label>
+                <input type="tel" id="phonenumber" name="phonenumber">
+            </div>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Xác nhận mật khẩu</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <button type="submit" class="register-button" id="register-button">Đăng ký</button>
+            <p class="login-link">Đã có tài khoản? <a href="/HTML/Dangnhap-Dangky/Dang nhap/login.html"
+                    class="nav-link">Đăng nhập
+                    ngay</a></p>
+        </form>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://instagram.com">Instagram</a>
+            <a href="https://twitter.com">Twitter</a>
+        </div>
+        <p>Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+    </footer>
+
+    <script src="/JS/dangnhap-dangky/register.js" defer></script>
+</body>
+
+</html>

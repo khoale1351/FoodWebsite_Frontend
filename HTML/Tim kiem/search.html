@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết Quả Tìm Kiếm - Ẩm Thực Đặc Sản Việt Nam</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/styles.css">
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="task-bar left">
+            <ul>
+                <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
+                <li><a href="/HTML/Lich su/khampha.html">Khám phá</a></li>
+            </ul>
+        </div>
+        <div class="search-bar">
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Tìm kiếm đặc sản...">
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+        <div class="login-section right" id="login-section">
+            <a href="/HTML/Dangnhap-Dangky/Dang nhap/login.html" class="auth-btn">Đăng nhập</a>
+            <a href="/HTML/Dangnhap-Dangky/Dang ky/register.html" class="auth-btn">Đăng ký</a>
+        </div>
+        <div class="login-section right" id="user-info" style="display: none;">
+            <span id="username-display"></span>
+            <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>KẾT QUẢ TÌM KIẾM</h1>
+        <p>Kết quả tìm kiếm cho: <span id="search-query"></span></p>
+    </header>
+
+    <div id="search-list" class="content-container"></div>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://instagram.com">Instagram</a>
+            <a href="https://twitter.com">Twitter</a>
+        </div>
+        <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+    </footer>
+
+    <script src="/JS/tim kiem/search.js"></script>
+    <script src="/JS/Home/index.js"></script>
+</body>
+
+</html>
