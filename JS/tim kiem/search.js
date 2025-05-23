@@ -40,22 +40,20 @@ if (query) {
                 return namePlain === query || namePlain.includes(query);
             });
 
-            if (filtered.length === 0) {
-                searchList.innerHTML = '<p>Không tìm thấy đặc sản nào!</p>';
-                return;
-            }
+            const gridHtml = filtered.length
+                ? `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    ${filtered.map(item => `
+                        <div class="search-item bg-white rounded-lg shadow p-4 flex flex-col items-center">
+                            <img src="${item.image || '/IMAGES/no-image.png'}" alt="${item.name}" class="w-40 h-40 object-cover rounded mb-3">
+                            <h3 class="text-lg font-semibold mb-1 text-center">${item.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3 text-center">${item.description || ''}</p>
+                            <a href="/HTML/chi tiet mon an/detail.html?id=${item.id}" class="px-4 py-2 bg-gradient-to-r from-pink-500 to-green-400 text-white rounded font-semibold hover:opacity-90 transition">Xem chi tiết</a>
+                        </div>
+                    `).join('')}
+                  </div>`
+                : '<p>Không tìm thấy đặc sản nào!</p>';
 
-            searchList.innerHTML = filtered.map(item => {
-                const detailLink = item.id ? `/HTML/chi tiet mon an/detail.html?id=${item.id}` : '#';
-                return `
-                    <div class="search-item">
-                        <img src="${item.image || 'default-image.jpg'}" alt="${item.name}">
-                        <h3>${item.name}</h3>
-                        <p>${item.description}</p>
-                        <a href="${detailLink}">${item.id ? 'Xem chi tiết' : 'Không có link'}</a>
-                    </div>
-                `;
-            }).join('');
+            searchList.innerHTML = gridHtml;
         })
         .catch(error => {
             console.error('Lỗi khi tìm kiếm:', error);
