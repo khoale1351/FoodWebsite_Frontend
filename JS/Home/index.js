@@ -236,8 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const [specialties, provinces] = await Promise.all([
-                fetchAPI('/Specialties', {}, false),
-                fetchAPI('/Provinces', {}, false)
+                fetchAPI('/api/Specialties', {}, false),
+                fetchAPI('/api/Provinces', {}, false)
             ]);
             let filteredData = specialties;
 
@@ -292,4 +292,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('select[name="region"]').addEventListener('change', applyFilter);
         document.querySelector('select[name="type"]').addEventListener('change', applyFilter);
     }
+
+    // Không cần kiểm tra token
+    fetch('http://localhost:5151/api/Specialties')
+        .then(res => res.json())
+        .then(data => {
+            // render danh sách món ăn
+        });
 });

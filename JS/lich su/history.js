@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const token = localStorage.getItem('token');
         if (!token) return; // Không lưu nếu chưa đăng nhập
 
-        // Gọi API lưu lịch sử (bạn cần có API này trên backend)
         fetch('http://localhost:5151/api/UserViewHistory', {
             method: 'POST',
             headers: {
