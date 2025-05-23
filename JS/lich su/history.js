@@ -77,10 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
             historyList.innerHTML = '<p>Bạn cần đăng nhập để xem lịch sử!</p>';
             return;
         }
-        fetch('http://localhost:5151/api/UserViewHistory', {
+        // Lấy userId từ profile
+        fetch('http://localhost:5151/api/Auth/profile', {
             headers: { 'Authorization': 'Bearer ' + token }
         })
-            .then(res => res.json())
+            .then(res => res.ok ? res.json() : Promise.reject('Lỗi xác thực'))
+            .then(user => {
+                return fetch(`http://localhost:5151/api/UserViewHistory/${user.id}`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+            })
+            .then(res => res.ok ? res.json() : Promise.reject('Không có lịch sử'))
             .then(history => {
                 if (!history || history.length === 0) {
                     historyList.innerHTML = '<p>Bạn chưa xem món đặc sản nào!</p>';
@@ -88,13 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 historyList.innerHTML = history.map(item => `
                 <div class="history-item">
-                    <img src="${item.image}" alt="${item.name}">
+                    <img src="${item.image || 'default-image.jpg'}" alt="${item.name || ''}">
                     <div>
-                        <h3>${item.name}</h3>
-                        <p>${item.description}</p>
+                        <h3>${item.specialtyName || item.recipeName || 'Không rõ'}</h3>
+                        <p>${item.description || ''}</p>
                     </div>
                 </div>
             `).join('');
+            })
+            .catch(err => {
+                historyList.innerHTML = `<p>${err}</p>`;
             });
     }
 
@@ -234,5 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userSection) userSection.style.display = 'none';
         document.getElementById('history-list').innerText = 'Bạn cần đăng nhập để xem lịch sử!';
     }
+
 });
 

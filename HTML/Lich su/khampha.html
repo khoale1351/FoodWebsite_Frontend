@@ -45,41 +45,6 @@
         <button onclick="clearHistory()" class="clear-history-btn">Xóa Lịch Sử</button>
     </div>
 
-    <script>
-        const token = localStorage.getItem('token');
-        if (token) {
-            fetch('http://localhost:5151/api/Auth/profile', {
-                headers: { 'Authorization': 'Bearer ' + token }
-            })
-                .then(res => res.ok ? res.json() : Promise.reject('Lỗi xác thực'))
-                .then(() => {
-                    // Gọi endpoint không truyền userId
-                    return fetch('http://localhost:5151/api/UserViewHistory', {
-                        headers: { 'Authorization': 'Bearer ' + token }
-                    });
-                })
-                .then(async res => {
-                    if (!res.ok) throw new Error('Không có lịch sử');
-                    const text = await res.text();
-                    if (!text) return [];
-                    try {
-                        return JSON.parse(text);
-                    } catch {
-                        return [];
-                    }
-                })
-                .then(data => {
-                    document.getElementById('history-list').innerHTML = data.length
-                        ? data.map(item => `<div>${item.specialtyName || item.recipeName || 'Không rõ'}</div>`).join('')
-                        : '<div>Bạn chưa có lịch sử xem nào.</div>';
-                })
-                .catch(err => {
-                    document.getElementById('history-list').innerText = err.message || err;
-                });
-        } else {
-            document.getElementById('history-list').innerText = 'Bạn cần đăng nhập để xem lịch sử!';
-        }
-    </script>
 
     <footer>
         <div class="social-links">
