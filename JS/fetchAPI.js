@@ -110,8 +110,23 @@ async function fetchTestimonials() {
 }
 
 // Gọi các hàm khi trang load
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   fetchFeaturedRecipes();
-  fetchTopRecipes();
-  fetchTestimonials();
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    fetchTopRecipes();
+    fetchTestimonials();
+  } else {
+    // Ẩn hoặc thông báo cho các phần này nếu muốn
+    const topList = document.getElementById("top-recipes-list");
+    if (topList)
+      topList.innerHTML = "<li>Bạn cần đăng nhập để xem top món.</li>";
+    const testimonialList = document.getElementById("testimonial-list");
+    if (testimonialList)
+      testimonialList.innerHTML = "<p>Bạn cần đăng nhập để xem đánh giá.</p>";
+  }
+
+  await fetchAPI("/api/Specialties", {}, false);
+  await fetchAPI("/api/Provinces", {}, false);
 });

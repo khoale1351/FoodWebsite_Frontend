@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ẩm Thực Đặc Sản Việt Nam</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="top-bar">
+            <div class="task-bar left">
+                <ul>
+                    <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
+                    <li><a href="/HTML/Lich su/khampha.html">Khám phá</a></li>
+                </ul>
+            </div>
+            <div class="search-bar">
+                <form action="/HTML/Tim kiem/search.html" method="get">
+                    <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <div class="login-section right" id="login-section">
+                <a href="/HTML/Login-Register/login.html" class="auth-btn">Đăng nhập</a>
+                <a href="/HTML/Login-Register/register.html" class="auth-btn">Đăng ký</a>
+            </div>
+            <div class="user-info" id="user-info" style="display: none;">
+                <span id="username"></span>
+                <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+            </div>
+        </div>
+
+        <body>
+            <header>
+                <h1>Đặc sản Lào Cai</h1>
+            </header>
+            <div id="province-specialties" class="content-container"></div>
+            <footer>
+                <!-- ...footer như các trang khác... -->
+            </footer>
+            <script src="/JS/chi-tiet-tinh-thanh/province-detail.js"></script>
+            <script src="/JS/Home/index.js"></script>
+            <script src="/JS/Home/province.js"></script>
+
+        </body>
+
+</html>
