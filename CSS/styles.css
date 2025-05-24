@@ -794,3 +794,10 @@ area {
 .search-item a:hover {
   opacity: 0.85;
 }
+
+#recipes-container > div {
+  transition: transform 0.2s ease;
+}
+#recipes-container > div:hover {
+  transform: translateY(-4px);
+}
