@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE_URL = "http://localhost:5151/api";
+  const BACKEND_BASE_URL = "http://localhost:5151";
 
   async function fetchAPI(endpoint, options = {}, needToken = false) {
     const url = `${API_BASE_URL}${endpoint}`;
@@ -8,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const token = localStorage.getItem("token");
       if (token) headers["Authorization"] = `Bearer ${token}`;
     }
+
     try {
       const fetchOptions = {
         method: options.method || "GET",
@@ -29,50 +31,68 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const BACKEND_BASE_URL = "http://localhost:5151";
   function getValidImageUrl(url) {
-    if (!url || typeof url !== "string") {
-      return "/IMAGES/no-image.png";
-    }
-    if (url.startsWith("http://") || url.startsWith("https://")) {
-      return url;
-    }
-    if (url.startsWith("/")) {
-      return BACKEND_BASE_URL + url;
-    }
-    return `${BACKEND_BASE_URL}/images/specialties/${url}`;
+    if (!url || typeof url !== "string") return "/IMAGES/no-image.png";
+    if (url.startsWith("http://") || url.startsWith("https://")) return url;
+    return BACKEND_BASE_URL + url;
   }
 
   const urlParams = new URLSearchParams(window.location.search);
   const specialtyId = urlParams.get("id");
 
   if (specialtyId) {
-    fetchAPI(`/Specialties/${specialtyId}/detail`, {}, false)
+    fetchAPI(`/Specialties/${specialtyId}/detail`)
       .then((data) => {
         const detail = document.getElementById("specialty-detail");
         const imageUrl = getValidImageUrl(data.imageUrls?.[0]);
-        detail.innerHTML = `
-                    <h2 class="text-2xl font-bold">${data.name}</h2>
-                    <img src="${imageUrl}" alt="${
-          data.name
-        }" class="w-full h-64 object-cover rounded">
-                    <p class="mt-4">${data.description || "Không có mô tả"}</p>
-                `;
 
-        // Lưu lịch sử xem nếu đã đăng nhập
+        detail.innerHTML = `
+          <h2 class="text-2xl font-bold">${data.name}</h2>
+          <img src="${imageUrl}" alt="${
+          data.name
+        }" class="w-full h-64 object-cover rounded mt-2">
+          <p class="mt-4">${data.description || "Không có mô tả"}</p>
+          <p class="mt-2 text-gray-600">Thuộc tỉnh: ${
+            data.provinceName || "Không rõ"
+          }</p>
+        `;
+
+        const recipesContainer = document.getElementById("recipes-container");
+        if (data.recipes && data.recipes.length > 0) {
+          data.recipes.forEach((recipe) => {
+            const recipeCard = document.createElement("div");
+            recipeCard.className = "p-4 border rounded shadow-sm bg-white";
+            recipeCard.innerHTML = `
+              <h4 class="font-semibold text-lg">${recipe.name}</h4>
+              <p><strong>Thời gian chuẩn bị:</strong> ${
+                recipe.prepareTime || 0
+              } phút</p>
+              <p><strong>Thời gian nấu:</strong> ${
+                recipe.cookingTime || 0
+              } phút</p>
+              <p>${recipe.description || "Không có mô tả"}</p>
+              <p class="text-sm text-gray-500">Lượt yêu thích: ${
+                recipe.favoriteCount
+              } - Lượt xem: ${recipe.viewCount}</p>
+            `;
+            recipesContainer.appendChild(recipeCard);
+          });
+        } else {
+          document.getElementById("recipe-list").style.display = "none";
+        }
+
         const token = localStorage.getItem("token");
         if (token) {
           fetchAPI(
             "/UserViewHistory",
             {
               method: "POST",
-              body: {
-                specialtyId: parseInt(specialtyId),
-                recipeId: null,
-              },
+              body: { specialtyId: parseInt(specialtyId), recipeId: null },
             },
             true
-          ).catch((error) => console.error("Lỗi khi lưu lịch sử:", error));
+          ).catch((error) =>
+            console.error("Lỗi khi lưu lịch sử:", error.message)
+          );
         }
       })
       .catch((error) => {
