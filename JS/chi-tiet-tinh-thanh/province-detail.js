@@ -1,18 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE = "http://localhost:5151/api";
 
-  const provinceMap = {
-    laocai: "Lào Cai",
-    hanoi: "Hà Nội",
-    // Thêm tỉnh khác nếu cần
-  };
+  // Lấy slug tỉnh từ query string (?province=laocai)
+  function getProvinceSlug() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("province") || "";
+  }
 
-  const fileName = window.location.pathname
-    .split("/")
-    .pop()
-    .replace(".html", "");
-  const provinceName = provinceMap[fileName.toLowerCase()] || fileName;
-
+  const provinceSlug = getProvinceSlug().toLowerCase();
   const container = document.getElementById("province-specialties");
 
   const removeVietnameseTones = (str) =>
@@ -20,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/đ/g, "d")
-      .replace(/Đ/g, "D");
+      .replace(/Đ/g, "D")
+      .replace(/\s+/g, "");
 
   const renderSpecialties = (specialties, provinceDisplayName) => {
     if (!specialties.length) {
@@ -31,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const itemsHTML = specialties
       .map((item) => {
         const API_BASE_URL = "http://localhost:5151";
-
         const imageUrl = item.specialtyImages?.[0]?.imageUrl
           ? `${API_BASE_URL}${item.specialtyImages[0].imageUrl}`
           : "/IMAGES/no-image.png";
@@ -68,18 +63,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fetchSpecialtiesByProvince = async () => {
     try {
-      const searchTerm = removeVietnameseTones(provinceName).toLowerCase();
-      const provinceRes = await fetch(
-        `${API_BASE}/Provinces?search=${encodeURIComponent(searchTerm)}`
-      );
+      if (!provinceSlug) {
+        showError("Không xác định được tỉnh thành!");
+        return;
+      }
+      // Lấy danh sách tỉnh
+      const provinceRes = await fetch(`${API_BASE}/Provinces`);
       const provinces = await provinceRes.json();
 
-      if (!provinces.length) {
+      // Tìm tỉnh theo slug
+      const matchedProvince = provinces.find((province) => {
+        const slug = removeVietnameseTones(province.name).toLowerCase();
+        return slug === provinceSlug;
+      });
+
+      if (!matchedProvince) {
         showError("Không tìm thấy tỉnh này!");
         return;
       }
 
-      const provinceId = provinces[0].id;
+      const provinceId = matchedProvince.id;
+      const provinceName = matchedProvince.name;
 
       const specialtiesRes = await fetch(
         `${API_BASE}/Specialties?provinceId=${provinceId}`
