@@ -65,10 +65,44 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function clearHistory() {
-    localStorage.removeItem("history");
-    const historyList = document.getElementById("history-list");
-    if (historyList) historyList.innerHTML = "";
-    alert("Đã xóa lịch sử trên trình duyệt!");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Bạn cần đăng nhập để xóa lịch sử!");
+      return;
+    }
+    // Lấy userId từ profile
+    fetch("http://localhost:5151/api/Auth/profile", {
+      headers: { Authorization: "Bearer " + token },
+    })
+      .then((res) => res.json())
+      .then((user) => {
+        // Lấy toàn bộ lịch sử
+        return fetch(`http://localhost:5151/api/UserViewHistory/user/${user.id}`, {
+          headers: { Authorization: "Bearer " + token },
+        });
+      })
+      .then((res) => res.json())
+      .then((history) => {
+        if (!history || history.length === 0) {
+          alert("Bạn chưa có lịch sử để xóa!");
+          return;
+        }
+        // Xóa từng lịch sử
+        const deletePromises = history.map((item) =>
+          fetch(`http://localhost:5151/api/UserViewHistory/${item.id}`, {
+            method: "DELETE",
+            headers: { Authorization: "Bearer " + token },
+          })
+        );
+        return Promise.all(deletePromises);
+      })
+      .then(() => {
+        document.getElementById("history-list").innerHTML = "<p>Bạn chưa xem món đặc sản nào!</p>";
+        alert("Đã xóa toàn bộ lịch sử trên server!");
+      })
+      .catch((err) => {
+        alert("Có lỗi khi xóa lịch sử: " + err);
+      });
   }
   window.clearHistory = clearHistory;
 
@@ -85,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => (res.ok ? res.json() : Promise.reject("Lỗi xác thực")))
       .then((user) => {
-        return fetch(`http://localhost:5151/api/UserViewHistory/${user.id}`, {
+        return fetch(`http://localhost:5151/api/UserViewHistory/user/${user.id}`, {
           headers: { Authorization: "Bearer " + token },
         });
       })
@@ -98,18 +132,13 @@ document.addEventListener("DOMContentLoaded", () => {
         historyList.innerHTML = history
           .map(
             (item) => `
-                <div class="history-item">
-                    <img src="${item.image || "default-image.jpg"}" alt="${
-              item.name || ""
-            }">
-                    <div>
-                        <h3>${
-                          item.specialtyName || item.recipeName || "Không rõ"
-                        }</h3>
-                        <p>${item.description || ""}</p>
-                    </div>
-                </div>
-            `
+              <div class="history-item">
+                  <div>
+                      <h3>${item.specialtyName || item.recipeName || "Không rõ"}</h3>
+                      <p>Thời gian xem: ${new Date(item.viewedAt).toLocaleString()}</p>
+                  </div>
+              </div>
+          `
           )
           .join("");
       })
@@ -227,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
             user.fullName || user.email || "Người dùng";
 
         // Lấy lịch sử
-        return fetch(`http://localhost:5151/api/UserViewHistory/${user.id}`, {
+        return fetch(`http://localhost:5151/api/UserViewHistory/user/${user.id}`, {
           headers: { Authorization: "Bearer " + token },
         });
       })
@@ -235,13 +264,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         document.getElementById("history-list").innerHTML = data.length
           ? data
-              .map(
-                (item) =>
-                  `<div>${
-                    item.specialtyName || item.recipeName || "Không rõ"
-                  }</div>`
-              )
-              .join("")
+            .map(
+              (item) =>
+                `<div>${item.specialtyName || item.recipeName || "Không rõ"
+                }</div>`
+            )
+            .join("")
           : "<div>Bạn chưa có lịch sử xem nào.</div>";
       })
       .catch((err) => {
