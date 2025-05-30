@@ -1,70 +1,62 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Khám Phá - Ẩm Thực Đặc Sản Việt Nam</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/CSS/styles.css" />
-    <link rel="stylesheet" href="/CSS/lich su.css" />
-  </head>
 
-  <body>
-    <div class="top-bar">
-      <div class="task-bar left">
-        <ul>
-          <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
-          <li><a href="/HTML/Lich su/khampha.html">Khám phá</a></li>
-        </ul>
-      </div>
-      <div class="search-bar">
-        <form action="/HTML/Tim kiem/search.html" method="get">
-          <input
-            type="text"
-            name="query"
-            placeholder="Tìm kiếm đặc sản..."
-            aria-label="Tìm kiếm"
-          />
-          <button type="submit">Tìm kiếm</button>
-        </form>
-      </div>
-      <div class="login-section right" id="login-section">
-        <a href="/HTML/Login-Register/login.html" class="auth-btn">Đăng nhập</a>
-        <a href="/HTML/Login-Register/register.html" class="auth-btn"
-          >Đăng ký</a
-        >
-      </div>
-      <div class="login-section right" id="user-section" style="display: none">
-        <span id="username-display"></span>
-        <button id="logout-button" class="auth-btn">Đăng xuất</button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khám Phá - Ẩm Thực Đặc Sản Việt Nam</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/CSS/styles.css" />
+  <link rel="stylesheet" href="/CSS/lich su.css" />
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="task-bar left">
+      <ul>
+        <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
+        <li><a href="/HTML/Lich su/khampha.html">Khám phá</a></li>
+      </ul>
     </div>
-
-    <header>
-      <h1>LỊCH SỬ XEM CỦA BẠN</h1>
-      <p>Xem lại các món đặc sản bạn đã khám phá!</p>
-    </header>
-
-    <div class="history-container content-container">
-      <h2>Lịch sử khám phá của bạn</h2>
-      <div id="history-list"></div>
-      <button onclick="clearHistory()" class="clear-history-btn">
-        Xóa Lịch Sử
-      </button>
+    <div class="search-bar">
+      <form action="/HTML/Tim kiem/search.html" method="get">
+        <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm" />
+        <button type="submit">Tìm kiếm</button>
+      </form>
     </div>
+    <div class="login-section right" id="login-section">
+      <a href="/HTML/Login-Register/login.html" class="auth-btn">Đăng nhập</a>
+      <a href="/HTML/Login-Register/register.html" class="auth-btn">Đăng ký</a>
+    </div>
+    <div class="login-section right" id="user-section" style="display: none">
+      <span id="username-display"></span>
+      <button id="logout-button" class="auth-btn">Đăng xuất</button>
+    </div>
+  </div>
 
-    <footer>
-      <div class="social-links">
-        <a href="https://facebook.com">Facebook</a>
-        <a href="https://instagram.com">Instagram</a>
-        <a href="https://twitter.com">Twitter</a>
-      </div>
-      <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
-    </footer>
+  <header>
+    <h1>LỊCH SỬ XEM CỦA BẠN</h1>
+    <p>Xem lại các món đặc sản bạn đã khám phá!</p>
+  </header>
 
-    <script src="/JS/lich su/history.js"></script>
-  </body>
+  <div class="history-container content-container">
+    <h2>Lịch sử khám phá của bạn</h2>
+    <div id="history-list"></div>
+    <button onclick="clearHistory()" class="clear-history-btn">
+      Xóa Lịch Sử
+    </button>
+  </div>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://facebook.com">Facebook</a>
+      <a href="https://instagram.com">Instagram</a>
+      <a href="https://twitter.com">Twitter</a>
+    </div>
+    <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+  </footer>
+
+  <script src="/JS/lich su/history.js"></script>
+</body>
+
 </html>

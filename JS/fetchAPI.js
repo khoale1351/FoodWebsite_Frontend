@@ -20,15 +20,21 @@ async function fetchAPI(endpoint, options = {}, needToken = false) {
   return res.json();
 }
 
-function getValidImageUrl(url) {
-  if (
-    !url ||
-    typeof url !== "string" ||
-    (!url.startsWith("http") && !url.startsWith("/"))
-  ) {
-    return "/IMAGES/no-image.png"; // Đặt 1 ảnh mặc định trong thư mục IMAGES
+function getValidImageUrl(item) {
+  const apiBaseUrl = "http://localhost:5151";
+  // Ưu tiên trường images (giống search.js)
+  if (item.images) {
+    return `${apiBaseUrl}${item.images}`;
   }
-  return url;
+  // Nếu có trường image
+  if (item.image) {
+    return `${apiBaseUrl}${item.image}`;
+  }
+  // Nếu có specialtyImages dạng mảng
+  if (item.specialtyImages?.[0]?.imageUrl) {
+    return `${apiBaseUrl}${item.specialtyImages[0].imageUrl}`;
+  }
+  return "/IMAGES/no-image.png";
 }
 
 // Hàm lấy món ăn nổi bật (ví dụ: lấy 6 món đầu tiên)
@@ -37,20 +43,7 @@ async function fetchFeaturedRecipes() {
   el.innerHTML = "";
   try {
     const specialties = await fetchAPI("/api/Specialties", {}, false);
-    specialties.slice(0, 6).forEach((s) => {
-      const div = document.createElement("div");
-      div.className = "specialty-item p-4 border rounded bg-white shadow";
-      div.innerHTML = `
-                <img src="${getValidImageUrl(
-                  s.specialtyImages?.[0]?.imageUrl
-                )}" alt="${
-        s.name
-      }" class="mb-2 w-full h-40 object-cover rounded">
-                <h3 class="font-bold">${s.name}</h3>
-                <p class="text-sm">${s.description || ""}</p>
-            `;
-      el.appendChild(div);
-    });
+    el.innerHTML = createRecipeCardHtml(specialties.slice(0, 6));
   } catch (err) {
     el.innerHTML = '<p class="text-red-500">Không thể tải dữ liệu.</p>';
   }
@@ -66,15 +59,10 @@ async function fetchTopRecipes() {
       {},
       true
     );
-    if (!data || data.length === 0) {
-      el.innerHTML = "<li>Chưa có dữ liệu.</li>";
-      return;
+    // Nếu API trả về mảng object món ăn:
+    if (data && data.length && data[0].id) {
+      el.innerHTML = createRecipeCardHtml(data);
     }
-    data.forEach((name, idx) => {
-      const li = document.createElement("li");
-      li.textContent = `${idx + 1}. ${name}`;
-      el.appendChild(li);
-    });
   } catch (err) {
     el.innerHTML = '<li class="text-red-500">Không thể tải dữ liệu.</li>';
   }
@@ -109,16 +97,38 @@ async function fetchTestimonials() {
   }
 }
 
+function createRecipeCardHtml(items) {
+  return `
+    <div class="flex flex-wrap justify-center gap-8 py-6">
+      ${items
+        .map((item) => {
+          const imageUrl = getValidImageUrl(item);
+          return `
+            <div class="search-item bg-white rounded-xl shadow-lg p-5 flex flex-col items-center transition hover:shadow-2xl w-72">
+              <img src="${imageUrl}" alt="${item.name}"
+                   class="w-40 h-40 object-cover rounded-lg mb-4 border border-gray-200">
+              <h3 class="text-lg font-bold mb-2 text-center">${item.name}</h3>
+              <p class="text-gray-600 text-sm mb-4 text-center line-clamp-3">${item.description || ""}</p>
+              <a href="/HTML/chi tiet mon an/detail.html?id=${item.id}"
+                 class="px-5 py-2 bg-gradient-to-r from-pink-500 to-green-400 text-white rounded-full font-semibold shadow hover:opacity-90 transition-all duration-150">
+                Xem chi tiết
+              </a>
+            </div>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
 // Gọi các hàm khi trang load
 document.addEventListener("DOMContentLoaded", async () => {
   fetchFeaturedRecipes();
-
   const token = localStorage.getItem("token");
   if (token) {
     fetchTopRecipes();
     fetchTestimonials();
   } else {
-    // Ẩn hoặc thông báo cho các phần này nếu muốn
     const topList = document.getElementById("top-recipes-list");
     if (topList)
       topList.innerHTML = "<li>Bạn cần đăng nhập để xem top món.</li>";
@@ -126,7 +136,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (testimonialList)
       testimonialList.innerHTML = "<p>Bạn cần đăng nhập để xem đánh giá.</p>";
   }
-
-  await fetchAPI("/api/Specialties", {}, false);
-  await fetchAPI("/api/Provinces", {}, false);
 });
