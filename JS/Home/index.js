@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
           tooltip.style.color = "#fff";
           tooltip.style.padding = "5px 10px";
           tooltip.style.borderRadius = "5px";
-          tooltip.style.zIndex = "50"; 
+          tooltip.style.zIndex = "50";
           document.body.appendChild(tooltip);
 
           area.addEventListener("mousemove", function handler(e) {

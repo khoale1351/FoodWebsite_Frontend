@@ -801,3 +801,47 @@ area {
 #recipes-container > div:hover {
   transform: translateY(-4px);
 }
+
+.container {
+  max-width: 2000px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding-bottom: 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.specialty-card {
+  min-width: 250px;
+  max-width: 250px;
+  flex-shrink: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  scroll-snap-align: start;
+  text-align: center;
+}
+
+.specialty-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}

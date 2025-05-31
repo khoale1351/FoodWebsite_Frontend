@@ -57,7 +57,7 @@ async function fetchTopSpecialties() {
     const data = await fetchAPI(
       "/api/statistics/top-specialties?top=10",
       {},
-      true
+      false
     );
     if (data && data.length && data[0].specialtyId) {
       el.innerHTML = createSpecialtyCarouselHtml(data);
@@ -75,7 +75,7 @@ async function fetchTestimonials() {
   const el = document.getElementById("testimonial-list");
   el.innerHTML = "";
   try {
-    const data = await fetchAPI("/api/Ratings", {}, true);
+    const data = await fetchAPI("/api/Ratings", {}, false);
     if (!data || data.length === 0) {
       el.innerHTML = "<p>Chưa có đánh giá nào.</p>";
       return;
@@ -186,10 +186,10 @@ function createRecipeCarouselHtml(items) {
 // Gọi các hàm khi trang load
 document.addEventListener("DOMContentLoaded", async () => {
   fetchFeaturedRecipes();
+  fetchTopSpecialties();
+  fetchTestimonials();
   const token = localStorage.getItem("token");
   if (token) {
-    fetchTopSpecialties();
-    fetchTestimonials();
   } else {
     const topList = document.getElementById("top-recipes-list");
     if (topList)
