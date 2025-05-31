@@ -43,7 +43,9 @@ async function fetchFeaturedRecipes() {
   el.innerHTML = "";
   try {
     const specialties = await fetchAPI("/api/Specialties", {}, false);
-    el.innerHTML = createRecipeCardHtml(specialties.slice(0, 6));
+    featuredRecipes = specialties.slice(0, 6); // hoặc nhiều hơn nếu muốn
+    featuredIndex = 0;
+    renderFeaturedRecipes();
   } catch (err) {
     el.innerHTML = '<p class="text-red-500">Không thể tải dữ liệu.</p>';
   }
@@ -88,9 +90,8 @@ async function fetchTestimonials() {
         div.className = "testimonial-item p-2 border-b";
         div.innerHTML = `
                 <p>${rating.comment || "Không có bình luận"}</p>
-                <p class="text-sm text-gray-500">${
-                  rating.user?.fullName || rating.userId || "Ẩn danh"
-                } - ${rating.stars || 0} sao</p>
+                <p class="text-sm text-gray-500">${rating.user?.fullName || rating.userId || "Ẩn danh"
+          } - ${rating.stars || 0} sao</p>
             `;
         el.appendChild(div);
       });
@@ -104,9 +105,9 @@ function createSpecialtyCarouselHtml(items) {
     <div class="overflow-x-auto">
       <div class="flex gap-6 py-4 px-2" style="scroll-snap-type: x mandatory; overflow-x: scroll;">
         ${items
-          .map((item) => {
-            const imageUrl = getValidImageUrl(item); // ảnh sẽ đúng nếu API có trả đúng trường
-            return `
+      .map((item) => {
+        const imageUrl = getValidImageUrl(item); // ảnh sẽ đúng nếu API có trả đúng trường
+        return `
               <div class="min-w-[250px] max-w-xs flex-shrink-0 bg-white rounded-xl shadow-md p-4 text-center scroll-snap-align-start">
                 <img src="${imageUrl}" alt="${item.specialtyName}" class="w-full h-40 object-cover rounded-md mb-3">
                 <h3 class="font-bold text-lg">${item.specialtyName}</h3>
@@ -117,8 +118,8 @@ function createSpecialtyCarouselHtml(items) {
                 </a>
               </div>
             `;
-          })
-          .join("")}
+      })
+      .join("")}
       </div>
     </div>
   `;
@@ -128,24 +129,23 @@ function createRecipeCardHtml(items) {
   return `
     <div class="flex flex-wrap justify-center gap-8 py-6">
       ${items
-        .map((item) => {
-          const imageUrl = getValidImageUrl(item);
-          return `
+      .map((item) => {
+        const imageUrl = getValidImageUrl(item);
+        return `
             <div class="search-item bg-white rounded-xl shadow-lg p-5 flex flex-col items-center transition hover:shadow-2xl w-72">
               <img src="${imageUrl}" alt="${item.name}"
                    class="w-40 h-40 object-cover rounded-lg mb-4 border border-gray-200">
               <h3 class="text-lg font-bold mb-2 text-center">${item.name}</h3>
-              <p class="text-gray-600 text-sm mb-4 text-center line-clamp-3">${
-                item.description || ""
-              }</p>
+              <p class="text-gray-600 text-sm mb-4 text-center line-clamp-3">${item.description || ""
+          }</p>
               <a href="/HTML/chi-tiet-mon-an/detail.html?id=${item.id}"
                  class="px-5 py-2 bg-gradient-to-r from-pink-500 to-green-400 text-white rounded-full font-semibold shadow hover:opacity-90 transition-all duration-150">
                 Xem chi tiết
               </a>
             </div>
           `;
-        })
-        .join("")}
+      })
+      .join("")}
     </div>
   `;
 }
@@ -155,45 +155,88 @@ function createRecipeCarouselHtml(items) {
     <div class="overflow-x-auto">
       <div class="flex gap-6 py-4 px-2" style="scroll-snap-type: x mandatory; overflow-x: scroll;">
         ${items
-          .map((item) => {
-            const imageUrl = getValidImageUrl(item);
-            return `
+      .map((item) => {
+        const imageUrl = getValidImageUrl(item);
+        return `
               <div class="min-w-[250px] max-w-xs flex-shrink-0 bg-white rounded-xl shadow-md p-4 text-center scroll-snap-align-start">
-                <img src="${imageUrl}" alt="${
-              item.name
-            }" class="w-full h-40 object-cover rounded-md mb-3">
+                <img src="${imageUrl}" alt="${item.name
+          }" class="w-full h-40 object-cover rounded-md mb-3">
                 <h3 class="font-bold text-lg">${item.name}</h3>
-                <p class="text-sm text-gray-500 mb-2">${
-                  item.specialtyName || ""
-                }</p>
-                <p class="text-sm text-gray-700 line-clamp-3">${
-                  item.description || ""
-                }</p>
-                <a href="/HTML/chi-tiet-mon-an/detail.html?id=${
-                  item.id
-                }" class="mt-3 inline-block px-4 py-1 bg-pink-500 text-white rounded-full text-sm hover:opacity-90">
+                <p class="text-sm text-gray-500 mb-2">${item.specialtyName || ""
+          }</p>
+                <p class="text-sm text-gray-700 line-clamp-3">${item.description || ""
+          }</p>
+                <a href="/HTML/chi-tiet-mon-an/detail.html?id=${item.id
+          }" class="mt-3 inline-block px-4 py-1 bg-pink-500 text-white rounded-full text-sm hover:opacity-90">
                   Xem chi tiết
                 </a>
               </div>
             `;
-          })
-          .join("")}
+      })
+      .join("")}
       </div>
     </div>
   `;
 }
 
+// Slideshow cho món ăn nổi bật
+let featuredRecipes = [];
+let featuredIndex = 0;
+const itemsPerSlide = 2; // Đổi thành 3 nếu muốn hiển thị 3 món/lượt
+
+function renderFeaturedRecipes() {
+  const container = document.getElementById('featured-recipes');
+  container.innerHTML = '';
+  if (!featuredRecipes.length) {
+    container.innerHTML = '<p>Không có món ăn nổi bật.</p>';
+    return;
+  }
+  for (let i = 0; i < itemsPerSlide; i++) {
+    const idx = (featuredIndex + i) % featuredRecipes.length;
+    const item = featuredRecipes[idx];
+    const imageUrl = getValidImageUrl(item);
+    const div = document.createElement('div');
+    div.className = 'search-item bg-white rounded-xl shadow-lg p-5 flex flex-col items-center transition hover:shadow-2xl w-72';
+    div.innerHTML = `
+      <img src="${imageUrl}" alt="${item.name || item.specialtyName}"
+           class="w-40 h-40 object-cover rounded-lg mb-4 border border-gray-200">
+      <h3 class="text-lg font-bold mb-2 text-center">${item.name || item.specialtyName}</h3>
+      <p class="text-gray-600 text-sm mb-4 text-center line-clamp-3">${item.description || ''}</p>
+      <a href="/HTML/chi-tiet-mon-an/detail.html?id=${item.id || item.specialtyId}"
+         class="px-5 py-2 bg-gradient-to-r from-pink-500 to-green-400 text-white rounded-full font-semibold shadow hover:opacity-90 transition-all duration-150">
+        Xem chi tiết
+      </a>
+    `;
+    container.appendChild(div);
+  }
+}
+
+document.getElementById('featured-prev').onclick = function () {
+  featuredIndex = (featuredIndex - itemsPerSlide + featuredRecipes.length) % featuredRecipes.length;
+  renderFeaturedRecipes();
+};
+document.getElementById('featured-next').onclick = function () {
+  featuredIndex = (featuredIndex + itemsPerSlide) % featuredRecipes.length;
+  renderFeaturedRecipes();
+};
+
+// Sau khi lấy dữ liệu featuredRecipes, gọi renderFeaturedRecipes()
+// Ví dụ:
+featuredRecipes = [
+  // { image: '...', name: '...', description: '...', link: '...' },
+  // ...
+];
+renderFeaturedRecipes();
+
 // Gọi các hàm khi trang load
 document.addEventListener("DOMContentLoaded", async () => {
   fetchFeaturedRecipes();
   fetchTopSpecialties();
-  fetchTestimonials();
+
   const token = localStorage.getItem("token");
   if (token) {
+    fetchTestimonials();
   } else {
-    const topList = document.getElementById("top-recipes-list");
-    if (topList)
-      topList.innerHTML = "<li>Bạn cần đăng nhập để xem top món.</li>";
     const testimonialList = document.getElementById("testimonial-list");
     if (testimonialList)
       testimonialList.innerHTML = "<p>Bạn cần đăng nhập để xem đánh giá.</p>";

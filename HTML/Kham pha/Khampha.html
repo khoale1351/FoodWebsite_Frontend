@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khám Phá Đặc Sản</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/CSS/styles.css" />
+    <link rel="stylesheet" href="/CSS/khampha.css" />
+
+</head>
+
+<body>
+    <div class="top-bar flex items-center">
+        <a href="/HTML/Home/index.html" class="logo flex items-center mr-4">
+            <img src="/IMAGES/logo-am-thuc.png" alt="Ẩm Thực" class="h-10 w-10 object-contain mr-2" />
+        </a>
+        <div class="task-bar left">
+            <ul>
+                <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
+                <li><a href="/HTML/Kham pha/Khampha.html">Khám Phá</a></li>
+                <li><a href="/HTML/Lich su/khampha.html">Lịch sử</a></li>
+            </ul>
+        </div>
+        <div class="search-bar">
+            <form action="/HTML/Tim kiem/search.html" method="get">
+                <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm" />
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+        <div class="login-section right" id="login-section">
+            <a href="/HTML/Login-Register/login.html" class="auth-btn">Đăng nhập</a>
+            <a href="/HTML/Login-Register/register.html" class="auth-btn">Đăng ký</a>
+        </div>
+        <div class="user-info" id="user-info" style="display: none">
+            <span id="username"></span>
+            <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+        </div>
+    </div>
+    <header>
+        <h1>KHÁM PHÁ ĐẶC SẢN VIỆT NAM</h1>
+        <p>Chọn vùng miền để khám phá các món ăn đặc sản!</p>
+    </header>
+
+    <div class="filter-bar flex justify-center my-4">
+        <select id="region-filter" class="px-4 py-2 border rounded mr-2">
+            <option value="">Tất cả vùng miền</option>
+            <option value="Miền Bắc">Miền Bắc</option>
+            <option value="Miền Trung">Miền Trung</option>
+            <option value="Miền Nam">Miền Nam</option>
+        </select>
+        <button id="filter-btn" class="px-4 py-2 bg-blue-500 text-white rounded">Lọc</button>
+    </div>
+
+    <div id="explore-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4"></div>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://instagram.com">Instagram</a>
+            <a href="https://twitter.com">Twitter</a>
+        </div>
+        <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+    </footer>
+    <script src="/JS/khampha/explore.js"></script>
+    <script src="/JS/Home/index.js"></script>
+    <script src="/JS/Home/province.js"></script>
+</body>
+
+</html>
