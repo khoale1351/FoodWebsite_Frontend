@@ -49,22 +49,24 @@ async function fetchFeaturedRecipes() {
   }
 }
 
-// Hàm lấy top 5 món được xem nhiều nhất
-async function fetchTopRecipes() {
-  const el = document.getElementById("top-recipes-list");
+// Hàm lấy top đặc sản nổi bật
+async function fetchTopSpecialties() {
+  const el = document.getElementById("top-specialties-list");
   el.innerHTML = "";
   try {
     const data = await fetchAPI(
-      "/api/UserViewHistory/top-recipes?top=5",
+      "/api/statistics/top-specialties?top=10",
       {},
       true
     );
-    // Nếu API trả về mảng object món ăn:
-    if (data && data.length && data[0].id) {
-      el.innerHTML = createRecipeCardHtml(data);
+    if (data && data.length && data[0].specialtyId) {
+      el.innerHTML = createSpecialtyCarouselHtml(data);
+    } else {
+      el.innerHTML = "<p>Không có dữ liệu đặc sản nổi bật.</p>";
     }
   } catch (err) {
-    el.innerHTML = '<li class="text-red-500">Không thể tải dữ liệu.</li>';
+    console.error(err);
+    el.innerHTML = '<p class="text-red-500">Không thể tải dữ liệu đặc sản.</p>';
   }
 }
 
@@ -97,6 +99,31 @@ async function fetchTestimonials() {
   }
 }
 
+function createSpecialtyCarouselHtml(items) {
+  return `
+    <div class="overflow-x-auto">
+      <div class="flex gap-6 py-4 px-2" style="scroll-snap-type: x mandatory; overflow-x: scroll;">
+        ${items
+          .map((item) => {
+            const imageUrl = getValidImageUrl(item); // ảnh sẽ đúng nếu API có trả đúng trường
+            return `
+              <div class="min-w-[250px] max-w-xs flex-shrink-0 bg-white rounded-xl shadow-md p-4 text-center scroll-snap-align-start">
+                <img src="${imageUrl}" alt="${item.specialtyName}" class="w-full h-40 object-cover rounded-md mb-3">
+                <h3 class="font-bold text-lg">${item.specialtyName}</h3>
+                <p class="text-sm text-gray-500 mb-2">Lượt xem: ${item.viewCount}</p>
+                <a href="/HTML/chi-tiet-mon-an/detail.html?id=${item.specialtyId}"
+                  class="px-5 py-2 bg-gradient-to-r from-pink-500 to-green-400 text-white rounded-full font-semibold shadow hover:opacity-90 transition-all duration-150">
+                  Xem chi tiết
+                </a>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
 function createRecipeCardHtml(items) {
   return `
     <div class="flex flex-wrap justify-center gap-8 py-6">
@@ -108,8 +135,10 @@ function createRecipeCardHtml(items) {
               <img src="${imageUrl}" alt="${item.name}"
                    class="w-40 h-40 object-cover rounded-lg mb-4 border border-gray-200">
               <h3 class="text-lg font-bold mb-2 text-center">${item.name}</h3>
-              <p class="text-gray-600 text-sm mb-4 text-center line-clamp-3">${item.description || ""}</p>
-              <a href="/HTML/chi tiet mon an/detail.html?id=${item.id}"
+              <p class="text-gray-600 text-sm mb-4 text-center line-clamp-3">${
+                item.description || ""
+              }</p>
+              <a href="/HTML/chi-tiet-mon-an/detail.html?id=${item.id}"
                  class="px-5 py-2 bg-gradient-to-r from-pink-500 to-green-400 text-white rounded-full font-semibold shadow hover:opacity-90 transition-all duration-150">
                 Xem chi tiết
               </a>
@@ -121,12 +150,45 @@ function createRecipeCardHtml(items) {
   `;
 }
 
+function createRecipeCarouselHtml(items) {
+  return `
+    <div class="overflow-x-auto">
+      <div class="flex gap-6 py-4 px-2" style="scroll-snap-type: x mandatory; overflow-x: scroll;">
+        ${items
+          .map((item) => {
+            const imageUrl = getValidImageUrl(item);
+            return `
+              <div class="min-w-[250px] max-w-xs flex-shrink-0 bg-white rounded-xl shadow-md p-4 text-center scroll-snap-align-start">
+                <img src="${imageUrl}" alt="${
+              item.name
+            }" class="w-full h-40 object-cover rounded-md mb-3">
+                <h3 class="font-bold text-lg">${item.name}</h3>
+                <p class="text-sm text-gray-500 mb-2">${
+                  item.specialtyName || ""
+                }</p>
+                <p class="text-sm text-gray-700 line-clamp-3">${
+                  item.description || ""
+                }</p>
+                <a href="/HTML/chi-tiet-mon-an/detail.html?id=${
+                  item.id
+                }" class="mt-3 inline-block px-4 py-1 bg-pink-500 text-white rounded-full text-sm hover:opacity-90">
+                  Xem chi tiết
+                </a>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
 // Gọi các hàm khi trang load
 document.addEventListener("DOMContentLoaded", async () => {
   fetchFeaturedRecipes();
   const token = localStorage.getItem("token");
   if (token) {
-    fetchTopRecipes();
+    fetchTopSpecialties();
     fetchTestimonials();
   } else {
     const topList = document.getElementById("top-recipes-list");

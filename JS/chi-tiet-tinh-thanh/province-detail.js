@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="text-gray-600 text-sm mb-4 text-center">${
             item.description || ""
           }</p>
-          <a href="/HTML/chi tiet mon an/detail.html?id=${item.id}" 
+          <a href="/HTML/chi-tiet-mon-an/detail.html?id=${item.id}" 
              class="px-5 py-2 bg-gradient-to-r from-pink-500 to-green-400 text-white rounded-full font-semibold shadow hover:opacity-90 transition-all duration-150">
              Xem chi tiết
           </a>
