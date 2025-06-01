@@ -845,3 +845,16 @@ area {
   object-fit: cover;
   border-radius: 8px;
 }
+/* Thu nhỏ và căn giữa hình ảnh món ăn ở trang chi tiết */
+#specialty-detail img {
+  display: block;
+  max-width: 320px;
+  max-height: 240px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 16px auto;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  object-fit: cover;
+  background: #f7faff;
+}

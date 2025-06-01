@@ -86,70 +86,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let provinces = [];
 
-    // Lấy danh sách tỉnh
-    async function fetchProvinces() {
-        const res = await fetch("http://localhost:5151/api/Provinces");
-        provinces = await res.json();
-    }
-
-    // Lấy danh sách món ăn theo tỉnh
-    async function fetchSpecialtiesByProvince(provinceId) {
-        specialtiesDiv.innerHTML = "Đang tải...";
-        const res = await fetch(`http://localhost:5151/api/Specialties?provinceId=${provinceId}`);
-        const data = await res.json();
-        if (!data || data.length === 0) {
-            specialtiesDiv.innerHTML = "<p>Không có đặc sản nào cho tỉnh này.</p>";
-            return;
+    // Chỉ chạy filter nếu có đủ phần tử
+    if (regionFilter && provinceFilter && specialtiesDiv) {
+        // Lấy danh sách tỉnh
+        async function fetchProvinces() {
+            const res = await fetch("http://localhost:5151/api/Provinces");
+            provinces = await res.json();
         }
-        specialtiesDiv.innerHTML = data.map(s => `
+
+        // Lấy danh sách món ăn theo tỉnh
+        async function fetchSpecialtiesByProvince(provinceId) {
+            specialtiesDiv.innerHTML = "Đang tải...";
+            const res = await fetch(`http://localhost:5151/api/Specialties?provinceId=${provinceId}`);
+            const data = await res.json();
+            if (!data || data.length === 0) {
+                specialtiesDiv.innerHTML = "<p>Không có đặc sản nào cho tỉnh này.</p>";
+                return;
+            }
+            specialtiesDiv.innerHTML = data.map(s => `
       <div class="specialty-item p-4 border rounded bg-white shadow">
         <img src="${s.imageUrls?.[0] || '/IMAGES/no-image.png'}" alt="${s.name}" class="mb-2 w-full h-40 object-cover rounded">
         <h3 class="font-bold">${s.name}</h3>
         <p class="text-sm">${s.description || ""}</p>
       </div>
     `).join("");
-    }
-
-    // Khi chọn miền
-    regionFilter.addEventListener("change", () => {
-        const region = regionFilter.value;
-        provinceFilter.innerHTML = `<option value="">Chọn tỉnh/thành</option>`;
-        provinceFilter.disabled = !region;
-        specialtiesDiv.innerHTML = "";
-        if (region) {
-            const filtered = provinces.filter(p => p.region === region);
-            filtered.forEach(p => {
-                provinceFilter.innerHTML += `<option value="${p.id}">${p.name}</option>`;
-            });
         }
-    });
 
-    // Hàm tạo slug từ tên tỉnh (không dấu, viết liền, thường dùng cho URL)
-    function toSlug(str) {
-        return str
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/đ/g, "d")
-            .replace(/Đ/g, "D")
-            .replace(/\s+/g, "")
-            .toLowerCase();
-    }
-
-    // Khi chọn tỉnh
-    provinceFilter.addEventListener("change", () => {
-        const provinceId = provinceFilter.value;
-        if (provinceId) {
-            // Lấy tên tỉnh từ danh sách đã fetch
-            const province = provinces.find(p => String(p.id) === provinceId);
-            if (province) {
-                const slug = toSlug(province.name);
-                // Chuyển hướng sang trang chi tiết tỉnh thành, truyền slug qua URL
-                window.location.href = `/HTML/chi tiet tinh thanh/tinhthanh.html?province=${slug}`;
+        // Khi chọn miền
+        regionFilter.addEventListener("change", () => {
+            const region = regionFilter.value;
+            provinceFilter.innerHTML = `<option value="">Chọn tỉnh/thành</option>`;
+            provinceFilter.disabled = !region;
+            specialtiesDiv.innerHTML = "";
+            if (region) {
+                const filtered = provinces.filter(p => p.region === region);
+                filtered.forEach(p => {
+                    provinceFilter.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+                });
             }
-        }
-    });
+        });
 
-    // Khởi tạo
-    fetchProvinces();
+        // Hàm tạo slug từ tên tỉnh (không dấu, viết liền, thường dùng cho URL)
+        function toSlug(str) {
+            return str
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/đ/g, "d")
+                .replace(/Đ/g, "D")
+                .replace(/\s+/g, "")
+                .toLowerCase();
+        }
+
+        // Khi chọn tỉnh
+        provinceFilter.addEventListener("change", () => {
+            const provinceId = provinceFilter.value;
+            if (provinceId) {
+                // Lấy tên tỉnh từ danh sách đã fetch
+                const province = provinces.find(p => String(p.id) === provinceId);
+                if (province) {
+                    const slug = toSlug(province.name);
+                    // Chuyển hướng sang trang chi tiết tỉnh thành, truyền slug qua URL
+                    window.location.href = `/HTML/chi tiet tinh thanh/tinhthanh.html?province=${slug}`;
+                }
+            }
+        });
+
+        // Khởi tạo
+        fetchProvinces();
+    }
+
+    // Luôn chạy initMapProvinces vì trang nào cũng có thể có bản đồ
     initMapProvinces();
 });

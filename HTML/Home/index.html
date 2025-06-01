@@ -1,663 +1,286 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ẩm Thực Đặc Sản Việt Nam</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/CSS/styles.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  </head>
 
-  <body>
-    <header>
-      <h1>Ẩm Thực Đặc Sản Việt Nam</h1>
-      <p>Khám phá những món ăn đặc sản độc đáo từ khắp mọi miền đất nước.</p>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ẩm Thực Đặc Sản Việt Nam</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/CSS/styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
 
-    <div class="top-bar flex items-center">
-      <a href="/HTML/Home/index.html" class="logo flex items-center mr-4">
-        <img
-          src="/IMAGES/logo-am-thuc.png"
-          alt="Ẩm Thực"
-          class="h-10 w-10 object-contain mr-2"
-        />
-      </a>
-      <div class="task-bar left">
-        <ul>
-          <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
-          <li><a href="/HTML/Lich su/khampha.html">Khám phá</a></li>
-        </ul>
-      </div>
-      <div class="search-bar">
-        <form action="/HTML/Tim kiem/search.html" method="get">
-          <input
-            type="text"
-            name="query"
-            placeholder="Tìm kiếm đặc sản..."
-            aria-label="Tìm kiếm"
-          />
-          <button type="submit">Tìm kiếm</button>
-        </form>
-      </div>
-      <div class="login-section right" id="login-section">
-        <a href="/HTML/Login-Register/login.html" class="auth-btn">Đăng nhập</a>
-        <a href="/HTML/Login-Register/register.html" class="auth-btn"
-          >Đăng ký</a
-        >
-      </div>
-      <div class="user-info" id="user-info" style="display: none">
-        <span id="username"></span>
-        <button id="logout-btn" class="auth-btn">Đăng xuất</button>
-      </div>
+<body>
+  <header>
+    <h1>Ẩm Thực Đặc Sản Việt Nam</h1>
+    <p>Khám phá những món ăn đặc sản độc đáo từ khắp mọi miền đất nước.</p>
+  </header>
+
+  <div class="top-bar flex items-center">
+    <a href="/HTML/Home/index.html" class="logo flex items-center mr-4">
+      <img src="/IMAGES/logo-am-thuc.png" alt="Ẩm Thực" class="h-10 w-10 object-contain mr-2" />
+    </a>
+    <div class="task-bar left">
+      <ul>
+        <li><a href="/HTML/Home/index.html">Trang chủ</a></li>
+        <li><a href="/HTML/Kham pha/Khampha.html">Khám Phá</a></li>
+        <li><a href="/HTML/Lich su/khampha.html">Lịch sử</a></li>
+      </ul>
     </div>
-
-    <div class="filter-bar flex justify-center my-4">
-      <select id="region-filter" class="px-4 py-2 border rounded mr-2">
-        <option value="">Chọn vùng miền</option>
-        <option value="Miền Bắc">Miền Bắc</option>
-        <option value="Miền Trung">Miền Trung</option>
-        <option value="Miền Nam">Miền Nam</option>
-      </select>
-      <select
-        id="province-filter"
-        class="px-4 py-2 border rounded mr-2"
-        disabled
-      >
-        <option value="">Chọn tỉnh/thành</option>
-      </select>
+    <div class="search-bar">
+      <form action="/HTML/Tim kiem/search.html" method="get">
+        <input type="text" name="query" placeholder="Tìm kiếm đặc sản..." aria-label="Tìm kiếm" />
+        <button type="submit">Tìm kiếm</button>
+      </form>
     </div>
-    <div
-      id="province-specialties"
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-    ></div>
-
-    <div class="map-container content-container">
-      <img
-        src="/IMAGES/vietnam-map.png"
-        alt="Bản đồ Việt Nam"
-        usemap="#vietnam-map"
-        class="map-image"
-      />
-      <map name="vietnam-map">
-        <area
-          target="_self"
-          alt="Lào Cai"
-          title="Lào Cai"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=laocai"
-          coords="223,58,272,71"
-          shape="rect"
-          data-tooltip="Lào Cai"
-        />
-        <area
-          target="_self"
-          alt="Hà Nội"
-          title="Hà Nội"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hanoi"
-          coords="213,129,262,142"
-          shape="rect"
-          data-tooltip="Hà Nội"
-        />
-        <area
-          target="_self"
-          alt="Tp.Hồ Chí Minh"
-          title="Tp.Hồ Chí Minh"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hochiminh"
-          coords="430,503,471,512"
-          shape="rect"
-          data-tooltip="Tp.Hồ Chí Minh"
-        />
-        <area
-          target="_self"
-          alt="Bắc Kạn"
-          title="Bắc Kạn"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=backan"
-          coords="297,18,345,37"
-          shape="rect"
-          data-tooltip="Bắc Kạn"
-        />
-        <area
-          target="_self"
-          alt="Lai Châu"
-          title="Lai Châu"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=laichau"
-          coords="190,73,239,86"
-          shape="rect"
-          data-tooltip="Lai Châu"
-        />
-        <area
-          target="_self"
-          alt="Vĩnh Phúc"
-          title="Vĩnh Phúc"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=vinhphuc"
-          coords="186,127,248,117"
-          shape="rect"
-          data-tooltip="Vĩnh Phúc"
-        />
-        <area
-          target="_self"
-          alt="Điện Biên"
-          title="Điện Biên"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=dienbien"
-          coords="183,114,244,100"
-          shape="rect"
-          data-tooltip="Điện Biên"
-        />
-        <area
-          target="_self"
-          alt="Yên Bái"
-          title="Yên Bái"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=yenbai"
-          coords="230,58,291,44"
-          shape="rect"
-          data-tooltip="Yên Bái"
-        />
-        <area
-          target="_self"
-          alt="Hà Giang"
-          title="Hà Giang"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hagiang"
-          coords="411,44,456,24"
-          shape="rect"
-          data-tooltip="Hà Giang"
-        />
-        <area
-          target="_self"
-          alt="Tuyên Quang"
-          title="Tuyên Quang"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=tuyenquang"
-          coords="417,61,480,46"
-          shape="rect"
-          data-tooltip="Tuyên Quang"
-        />
-        <area
-          target="_self"
-          alt="Cao Bằng"
-          title="Cao Bằng"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=caobang"
-          coords="469,71,533,57"
-          shape="rect"
-          data-tooltip="Cao Bằng"
-        />
-        <area
-          target="_self"
-          alt="Sơn La"
-          title="Sơn La"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=sonla"
-          coords="227,151,283,158"
-          shape="rect"
-          data-tooltip="Sơn La"
-        />
-        <area
-          target="_self"
-          alt="Lạng Sơn"
-          title="Lạng Sơn"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=langson"
-          coords="476,76,544,88"
-          shape="rect"
-          data-tooltip="Lạng Sơn"
-        />
-        <area
-          target="_self"
-          alt="Thái Nguyên"
-          title="Thái Nguyên"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thainguyen"
-          coords="461,89,518,103"
-          shape="rect"
-          data-tooltip="Thái Nguyên"
-        />
-        <area
-          target="_self"
-          alt="Bắc Giang"
-          title="Bắc Giang"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=bacgiang"
-          coords="465,105,524,116"
-          shape="rect"
-          data-tooltip="Bắc Giang"
-        />
-        <area
-          target="_self"
-          alt="Quảng Ninh"
-          title="Quảng Ninh"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangninh"
-          coords="518,113,586,125"
-          shape="rect"
-          data-tooltip="Quảng Ninh"
-        />
-        <area
-          target="_self"
-          alt="Bắc Ninh"
-          title="Bắc Ninh"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=bacninh"
-          coords="459,125,527,137"
-          shape="rect"
-          data-tooltip="Bắc Ninh"
-        />
-        <area
-          target="_self"
-          alt="Hưng Yên"
-          title="Hưng Yên"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hungyen"
-          coords="455,137,518,149"
-          shape="rect"
-          data-tooltip="Hưng Yên"
-        />
-        <area
-          target="_self"
-          alt="Hải Phòng"
-          title="Hải Phòng"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=haiphong"
-          coords="515,146,570,155"
-          shape="rect"
-          data-tooltip="Hải Phòng"
-        />
-        <area
-          target="_self"
-          alt="Thái Bình"
-          title="Thái Bình"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thaibinh"
-          coords="459,156,508,166"
-          shape="rect"
-          data-tooltip="Thái Bình"
-        />
-        <area
-          target="_self"
-          alt="Nam Định"
-          title="Nam Định"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=namdinh"
-          coords="525,161,585,172"
-          shape="rect"
-          data-tooltip="Nam Định"
-        />
-        <area
-          target="_self"
-          alt="Hải Dương"
-          title="Hải Dương"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=haiduong"
-          coords="405,169,455,181"
-          shape="rect"
-          data-tooltip="Hải Dương"
-        />
-        <area
-          target="_self"
-          alt="Hà Nam"
-          title="Hà Nam"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hanam"
-          coords="460,173,501,184"
-          shape="rect"
-          data-tooltip="Hà Nam"
-        />
-        <area
-          target="_self"
-          alt="Ninh Bình"
-          title="Ninh Bình"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=ninhbinh"
-          coords="424,185,478,200"
-          shape="rect"
-          data-tooltip="Ninh Bình"
-        />
-        <area
-          target="_self"
-          alt="Phú Thọ"
-          title="Phú Thọ"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=phutho"
-          coords="254,165,310,172"
-          shape="rect"
-          data-tooltip="Phú Thọ"
-        />
-        <area
-          target="_self"
-          alt="Hòa Bình"
-          title="Hòa Bình"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hoabinh"
-          coords="254,181,310,188"
-          shape="rect"
-          data-tooltip="Hòa Bình"
-        />
-        <area
-          target="_self"
-          alt="Thanh Hóa"
-          title="Thanh Hóa"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thanhhoa"
-          coords="255,199,311,206"
-          shape="rect"
-          data-tooltip="Thanh Hóa"
-        />
-        <area
-          target="_self"
-          alt="Nghệ An"
-          title="Nghệ An"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=nghean"
-          coords="279,213,329,219"
-          shape="rect"
-          data-tooltip="Nghệ An"
-        />
-        <area
-          target="_self"
-          alt="Hà Tĩnh"
-          title="Hà Tĩnh"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hatinh"
-          coords="292,227,342,233"
-          shape="rect"
-          data-tooltip="Hà Tĩnh"
-        />
-        <area
-          target="_self"
-          alt="Quảng Bình"
-          title="Quảng Bình"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangbinh"
-          coords="436,244,488,256"
-          shape="rect"
-          data-tooltip="Quảng Bình"
-        />
-        <area
-          target="_self"
-          alt="Quảng Trị"
-          title="Quảng Trị"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangtri"
-          coords="446,272,498,284"
-          shape="rect"
-          data-tooltip="Quảng Trị"
-        />
-        <area
-          target="_self"
-          alt="Thừa Thiên Huế"
-          title="Thừa Thiên Huế"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thuathienhue"
-          coords="486,291,564,307"
-          shape="rect"
-          data-tooltip="Thừa Thiên Huế"
-        />
-        <area
-          target="_self"
-          alt="Đà Nẵng"
-          title="Đà Nẵng"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=danang"
-          coords="345,297,401,313"
-          shape="rect"
-          data-tooltip="Đà Nẵng"
-        />
-        <area
-          target="_self"
-          alt="Quảng Nam"
-          title="Quảng Nam"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangnam"
-          coords="352,317,408,333"
-          shape="rect"
-          data-tooltip="Quảng Nam"
-        />
-        <area
-          target="_self"
-          alt="Kom Tum"
-          title="Kom Tum"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=kontum"
-          coords="341,347,397,363"
-          shape="rect"
-          data-tooltip="Kom Tum"
-        />
-        <area
-          target="_self"
-          alt="Quảng Ngãi"
-          title="Quảng Ngãi"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangngai"
-          coords="524,336,580,352"
-          shape="rect"
-          data-tooltip="Quảng Ngãi"
-        />
-        <area
-          target="_self"
-          alt="Bình Định"
-          title="Bình Định"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhdinh"
-          coords="515,367,571,383"
-          shape="rect"
-          data-tooltip="Bình Định"
-        />
-        <area
-          target="_self"
-          alt="Đắk Lắk"
-          title="Đắk Lắk"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=daklak"
-          coords="340,402,396,418"
-          shape="rect"
-          data-tooltip="Đắk Lắk"
-        />
-        <area
-          target="_self"
-          alt="Đắk Nông"
-          title="Đắk Nông"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=daknong"
-          coords="333,424,389,440"
-          shape="rect"
-          data-tooltip="Đắk Nông"
-        />
-        <area
-          target="_self"
-          alt="Phú Yên"
-          title="Phú Yên"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=phuyen"
-          coords="538,398,594,414"
-          shape="rect"
-          data-tooltip="Phú Yên"
-        />
-        <area
-          target="_self"
-          alt="Khánh Hòa"
-          title="Khánh Hòa"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=khanhhoa"
-          coords="527,423,583,439"
-          shape="rect"
-          data-tooltip="Khánh Hòa"
-        />
-        <area
-          target="_self"
-          alt="Bình Phước"
-          title="Bình Phước"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhphuoc"
-          coords="343,443,402,455"
-          shape="rect"
-          data-tooltip="Bình Phước"
-        />
-        <area
-          target="_self"
-          alt="Bình Dương"
-          title="Bình Dương"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhduong"
-          coords="279,446,338,458"
-          shape="rect"
-          data-tooltip="Bình Dương"
-        />
-        <area
-          target="_self"
-          alt="Lâm Đồng"
-          title="Lâm Đồng"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=lamdong"
-          coords="535,445,593,455"
-          shape="rect"
-          data-tooltip="Lâm Đồng"
-        />
-        <area
-          target="_self"
-          alt="Ninh Thuận"
-          title="Ninh Thuận"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=ninhthuan"
-          coords="517,457,575,469"
-          shape="rect"
-          data-tooltip="Ninh Thuận"
-        />
-        <area
-          target="_self"
-          alt="Bình Thuận"
-          title="Bình Thuận"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhthuan"
-          coords="519,472,577,484"
-          shape="rect"
-          data-tooltip="Bình Thuận"
-        />
-        <area
-          target="_self"
-          alt="Đồng Nai"
-          title="Đồng Nai"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=dongnai"
-          coords="496,485,547,497"
-          shape="rect"
-          data-tooltip="Đồng Nai"
-        />
-        <area
-          target="_self"
-          alt="Vũng Tàu"
-          title="Vũng Tàu"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=vungtau"
-          coords="545,492,634,503"
-          shape="rect"
-          data-tooltip="Vũng Tàu"
-        />
-        <area
-          target="_self"
-          alt="Tây Ninh"
-          title="Tây Ninh"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=tayninh"
-          coords="335,459,383,472"
-          shape="rect"
-          data-tooltip="Tây Ninh"
-        />
-        <area
-          target="_self"
-          alt="Long An"
-          title="Long An"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=longan"
-          coords="293,463,341,476"
-          shape="rect"
-          data-tooltip="Long An"
-        />
-        <area
-          target="_self"
-          alt="Tiền Giang"
-          title="Tiền Giang"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=tiengiang"
-          coords="256,495,313,508"
-          shape="rect"
-          data-tooltip="Tiền Giang"
-        />
-        <area
-          target="_self"
-          alt="Đồng Tháp"
-          title="Đồng Tháp"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=dongthap"
-          coords="239,469,291,485"
-          shape="rect"
-          data-tooltip="Đồng Tháp"
-        />
-        <area
-          target="_self"
-          alt="Cần Thơ"
-          title="Cần Thơ"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=cantho"
-          coords="268,507,317,520"
-          shape="rect"
-          data-tooltip="Cần Thơ"
-        />
-        <area
-          target="_self"
-          alt="Kiên Giang"
-          title="Kiên Giang"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=kiengiang"
-          coords="226,517,282,533"
-          shape="rect"
-          data-tooltip="Kiên Giang"
-        />
-        <area
-          target="_self"
-          alt="Bến Tre"
-          title="Bến Tre"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=bentre"
-          coords="472,504,510,518"
-          shape="rect"
-          data-tooltip="Bến Tre"
-        />
-        <area
-          target="_self"
-          alt="Trà Vinh"
-          title="Trà Vinh"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=travinh"
-          coords="418,521,465,535"
-          shape="rect"
-          data-tooltip="Trà Vinh"
-        />
-        <area
-          target="_self"
-          alt="Sóc Trăng"
-          title="Sóc Trăng"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=soctrang"
-          coords="460,538,514,552"
-          shape="rect"
-          data-tooltip="Sóc Trăng"
-        />
-        <area
-          target="_self"
-          alt="Hậu Giang"
-          title="Hậu Giang"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=haugiang"
-          coords="398,548,452,562"
-          shape="rect"
-          data-tooltip="Hậu Giang"
-        />
-        <area
-          target="_self"
-          alt="Cà Mau"
-          title="Cà Mau"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=camau"
-          coords="248,544,302,558"
-          shape="rect"
-          data-tooltip="Cà Mau"
-        />
-        <area
-          target="_self"
-          alt="Bạc Liêu"
-          title="Bạc Liêu"
-          href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=baclieu"
-          coords="261,559,315,573"
-          shape="rect"
-          data-tooltip="Bạc Liêu"
-        />
-      </map>
+    <div class="login-section right" id="login-section">
+      <a href="/HTML/Login-Register/login.html" class="auth-btn">Đăng nhập</a>
+      <a href="/HTML/Login-Register/register.html" class="auth-btn">Đăng ký</a>
     </div>
+    <div class="user-info" id="user-info" style="display: none">
+      <span id="username"></span>
+      <button id="logout-btn" class="auth-btn">Đăng xuất</button>
+    </div>
+  </div>
 
-    <div class="content-container my-6">
+  <div class="filter-bar flex justify-center my-4">
+    <select id="region-filter" class="px-4 py-2 border rounded mr-2">
+      <option value="">Chọn vùng miền</option>
+      <option value="Miền Bắc">Miền Bắc</option>
+      <option value="Miền Trung">Miền Trung</option>
+      <option value="Miền Nam">Miền Nam</option>
+    </select>
+    <select id="province-filter" class="px-4 py-2 border rounded mr-2" disabled>
+      <option value="">Chọn tỉnh/thành</option>
+    </select>
+  </div>
+  <div id="province-specialties" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+  <div class="flex flex-col md:flex-row gap-6 my-8">
+    <!-- Món ăn nổi bật (4 phần) -->
+    <div class="w-full md:w-2/5 flex flex-col justify-start">
       <h2 class="text-xl font-bold mb-2">Món ăn nổi bật</h2>
-      <div
-        id="featured-recipes"
-        class="flex flex-wrap justify-center gap-8 py-6"
-      ></div>
-
-      <section class="my-10">
-        <h2 class="text-xl font-bold mb-4">Đặc sản được xem nhiều nhất</h2>
-        <div class="container mx-auto px-4">
-          <div id="top-specialties-list" class="horizontal-scroll"></div>
-        </div>
-      </section>
-
-      <div class="testimonials content-container">
-        <h2>Đánh giá từ người dùng</h2>
-        <div id="testimonial-list"></div>
+      <div class="flex items-center justify-center gap-4">
+        <button id="featured-prev" class="slideshow-btn px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">&lt;</button>
+        <div id="featured-recipes" class="flex flex-wrap justify-center gap-8 py-6"></div>
+        <button id="featured-next" class="slideshow-btn px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">&gt;</button>
       </div>
     </div>
-
-    <footer>
-      <div class="social-links">
-        <a href="https://facebook.com">Facebook</a>
-        <a href="https://instagram.com">Instagram</a>
-        <a href="https://twitter.com">Twitter</a>
+    <!-- Bản đồ Việt Nam (6 phần) -->
+    <div class="w-full md:w-3/5 flex justify-center items-start">
+      <div class="map-container content-container">
+        <img src="/IMAGES/vietnam-map.png" alt="Bản đồ Việt Nam" usemap="#vietnam-map" class="map-image" />
+        <map name="vietnam-map">
+          <area target="_self" alt="Lào Cai" title="Lào Cai"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=laocai" coords="223,58,272,71" shape="rect"
+            data-tooltip="Lào Cai" />
+          <area target="_self" alt="Hà Nội" title="Hà Nội"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hanoi" coords="213,129,262,142" shape="rect"
+            data-tooltip="Hà Nội" />
+          <area target="_self" alt="Tp.Hồ Chí Minh" title="Tp.Hồ Chí Minh"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hochiminh" coords="430,503,471,512" shape="rect"
+            data-tooltip="Tp.Hồ Chí Minh" />
+          <area target="_self" alt="Bắc Kạn" title="Bắc Kạn"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=backan" coords="297,18,345,37" shape="rect"
+            data-tooltip="Bắc Kạn" />
+          <area target="_self" alt="Lai Châu" title="Lai Châu"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=laichau" coords="190,73,239,86" shape="rect"
+            data-tooltip="Lai Châu" />
+          <area target="_self" alt="Vĩnh Phúc" title="Vĩnh Phúc"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=vinhphuc" coords="186,127,248,117" shape="rect"
+            data-tooltip="Vĩnh Phúc" />
+          <area target="_self" alt="Điện Biên" title="Điện Biên"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=dienbien" coords="183,114,244,100" shape="rect"
+            data-tooltip="Điện Biên" />
+          <area target="_self" alt="Yên Bái" title="Yên Bái"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=yenbai" coords="230,58,291,44" shape="rect"
+            data-tooltip="Yên Bái" />
+          <area target="_self" alt="Hà Giang" title="Hà Giang"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hagiang" coords="411,44,456,24" shape="rect"
+            data-tooltip="Hà Giang" />
+          <area target="_self" alt="Tuyên Quang" title="Tuyên Quang"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=tuyenquang" coords="417,61,480,46" shape="rect"
+            data-tooltip="Tuyên Quang" />
+          <area target="_self" alt="Cao Bằng" title="Cao Bằng"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=caobang" coords="469,71,533,57" shape="rect"
+            data-tooltip="Cao Bằng" />
+          <area target="_self" alt="Sơn La" title="Sơn La"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=sonla" coords="227,151,283,158" shape="rect"
+            data-tooltip="Sơn La" />
+          <area target="_self" alt="Lạng Sơn" title="Lạng Sơn"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=langson" coords="476,76,544,88" shape="rect"
+            data-tooltip="Lạng Sơn" />
+          <area target="_self" alt="Thái Nguyên" title="Thái Nguyên"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thainguyen" coords="461,89,518,103" shape="rect"
+            data-tooltip="Thái Nguyên" />
+          <area target="_self" alt="Bắc Giang" title="Bắc Giang"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=bacgiang" coords="465,105,524,116" shape="rect"
+            data-tooltip="Bắc Giang" />
+          <area target="_self" alt="Quảng Ninh" title="Quảng Ninh"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangninh" coords="518,113,586,125" shape="rect"
+            data-tooltip="Quảng Ninh" />
+          <area target="_self" alt="Bắc Ninh" title="Bắc Ninh"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=bacninh" coords="459,125,527,137" shape="rect"
+            data-tooltip="Bắc Ninh" />
+          <area target="_self" alt="Hưng Yên" title="Hưng Yên"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hungyen" coords="455,137,518,149" shape="rect"
+            data-tooltip="Hưng Yên" />
+          <area target="_self" alt="Hải Phòng" title="Hải Phòng"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=haiphong" coords="515,146,570,155" shape="rect"
+            data-tooltip="Hải Phòng" />
+          <area target="_self" alt="Thái Bình" title="Thái Bình"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thaibinh" coords="459,156,508,166" shape="rect"
+            data-tooltip="Thái Bình" />
+          <area target="_self" alt="Nam Định" title="Nam Định"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=namdinh" coords="525,161,585,172" shape="rect"
+            data-tooltip="Nam Định" />
+          <area target="_self" alt="Hải Dương" title="Hải Dương"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=haiduong" coords="405,169,455,181" shape="rect"
+            data-tooltip="Hải Dương" />
+          <area target="_self" alt="Hà Nam" title="Hà Nam"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hanam" coords="460,173,501,184" shape="rect"
+            data-tooltip="Hà Nam" />
+          <area target="_self" alt="Ninh Bình" title="Ninh Bình"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=ninhbinh" coords="424,185,478,200" shape="rect"
+            data-tooltip="Ninh Bình" />
+          <area target="_self" alt="Phú Thọ" title="Phú Thọ"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=phutho" coords="254,165,310,172" shape="rect"
+            data-tooltip="Phú Thọ" />
+          <area target="_self" alt="Hòa Bình" title="Hòa Bình"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hoabinh" coords="254,181,310,188" shape="rect"
+            data-tooltip="Hòa Bình" />
+          <area target="_self" alt="Thanh Hóa" title="Thanh Hóa"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thanhhoa" coords="255,199,311,206" shape="rect"
+            data-tooltip="Thanh Hóa" />
+          <area target="_self" alt="Nghệ An" title="Nghệ An"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=nghean" coords="279,213,329,219" shape="rect"
+            data-tooltip="Nghệ An" />
+          <area target="_self" alt="Hà Tĩnh" title="Hà Tĩnh"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=hatinh" coords="292,227,342,233" shape="rect"
+            data-tooltip="Hà Tĩnh" />
+          <area target="_self" alt="Quảng Bình" title="Quảng Bình"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangbinh" coords="436,244,488,256" shape="rect"
+            data-tooltip="Quảng Bình" />
+          <area target="_self" alt="Quảng Trị" title="Quảng Trị"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangtri" coords="446,272,498,284" shape="rect"
+            data-tooltip="Quảng Trị" />
+          <area target="_self" alt="Thừa Thiên Huế" title="Thừa Thiên Huế"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=thuathienhue" coords="486,291,564,307" shape="rect"
+            data-tooltip="Thừa Thiên Huế" />
+          <area target="_self" alt="Đà Nẵng" title="Đà Nẵng"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=danang" coords="345,297,401,313" shape="rect"
+            data-tooltip="Đà Nẵng" />
+          <area target="_self" alt="Quảng Nam" title="Quảng Nam"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangnam" coords="352,317,408,333" shape="rect"
+            data-tooltip="Quảng Nam" />
+          <area target="_self" alt="Kom Tum" title="Kom Tum"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=kontum" coords="341,347,397,363" shape="rect"
+            data-tooltip="Kom Tum" />
+          <area target="_self" alt="Quảng Ngãi" title="Quảng Ngãi"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=quangngai" coords="524,336,580,352" shape="rect"
+            data-tooltip="Quảng Ngãi" />
+          <area target="_self" alt="Bình Định" title="Bình Định"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhdinh" coords="515,367,571,383" shape="rect"
+            data-tooltip="Bình Định" />
+          <area target="_self" alt="Đắk Lắk" title="Đắk Lắk"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=daklak" coords="340,402,396,418" shape="rect"
+            data-tooltip="Đắk Lắk" />
+          <area target="_self" alt="Đắk Nông" title="Đắk Nông"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=daknong" coords="333,424,389,440" shape="rect"
+            data-tooltip="Đắk Nông" />
+          <area target="_self" alt="Phú Yên" title="Phú Yên"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=phuyen" coords="538,398,594,414" shape="rect"
+            data-tooltip="Phú Yên" />
+          <area target="_self" alt="Khánh Hòa" title="Khánh Hòa"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=khanhhoa" coords="527,423,583,439" shape="rect"
+            data-tooltip="Khánh Hòa" />
+          <area target="_self" alt="Bình Phước" title="Bình Phước"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhphuoc" coords="343,443,402,455" shape="rect"
+            data-tooltip="Bình Phước" />
+          <area target="_self" alt="Bình Dương" title="Bình Dương"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhduong" coords="279,446,338,458" shape="rect"
+            data-tooltip="Bình Dương" />
+          <area target="_self" alt="Lâm Đồng" title="Lâm Đồng"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=lamdong" coords="535,445,593,455" shape="rect"
+            data-tooltip="Lâm Đồng" />
+          <area target="_self" alt="Ninh Thuận" title="Ninh Thuận"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=ninhthuan" coords="517,457,575,469" shape="rect"
+            data-tooltip="Ninh Thuận" />
+          <area target="_self" alt="Bình Thuận" title="Bình Thuận"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=binhthuan" coords="519,472,577,484" shape="rect"
+            data-tooltip="Bình Thuận" />
+          <area target="_self" alt="Đồng Nai" title="Đồng Nai"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=dongnai" coords="496,485,547,497" shape="rect"
+            data-tooltip="Đồng Nai" />
+          <area target="_self" alt="Vũng Tàu" title="Vũng Tàu"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=vungtau" coords="545,492,634,503" shape="rect"
+            data-tooltip="Vũng Tàu" />
+          <area target="_self" alt="Tây Ninh" title="Tây Ninh"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=tayninh" coords="335,459,383,472" shape="rect"
+            data-tooltip="Tây Ninh" />
+          <area target="_self" alt="Long An" title="Long An"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=longan" coords="293,463,341,476" shape="rect"
+            data-tooltip="Long An" />
+          <area target="_self" alt="Tiền Giang" title="Tiền Giang"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=tiengiang" coords="256,495,313,508" shape="rect"
+            data-tooltip="Tiền Giang" />
+          <area target="_self" alt="Đồng Tháp" title="Đồng Tháp"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=dongthap" coords="239,469,291,485" shape="rect"
+            data-tooltip="Đồng Tháp" />
+          <area target="_self" alt="Cần Thơ" title="Cần Thơ"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=cantho" coords="268,507,317,520" shape="rect"
+            data-tooltip="Cần Thơ" />
+          <area target="_self" alt="Kiên Giang" title="Kiên Giang"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=kiengiang" coords="226,517,282,533" shape="rect"
+            data-tooltip="Kiên Giang" />
+          <area target="_self" alt="Bến Tre" title="Bến Tre"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=bentre" coords="472,504,510,518" shape="rect"
+            data-tooltip="Bến Tre" />
+          <area target="_self" alt="Trà Vinh" title="Trà Vinh"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=travinh" coords="418,521,465,535" shape="rect"
+            data-tooltip="Trà Vinh" />
+          <area target="_self" alt="Sóc Trăng" title="Sóc Trăng"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=soctrang" coords="460,538,514,552" shape="rect"
+            data-tooltip="Sóc Trăng" />
+          <area target="_self" alt="Hậu Giang" title="Hậu Giang"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=haugiang" coords="398,548,452,562" shape="rect"
+            data-tooltip="Hậu Giang" />
+          <area target="_self" alt="Cà Mau" title="Cà Mau"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=camau" coords="248,544,302,558" shape="rect"
+            data-tooltip="Cà Mau" />
+          <area target="_self" alt="Bạc Liêu" title="Bạc Liêu"
+            href="/HTML/chi tiet tinh thanh/tinhthanh.html?province=baclieu" coords="261,559,315,573" shape="rect"
+            data-tooltip="Bạc Liêu" />
+        </map>
       </div>
-      <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
-    </footer>
+    </div>
+  </div>
 
-    <script src="/JS/Home/index.js"></script>
-    <script src="/JS/Home/province.js"></script>
-    <script src="/JS/fetchAPI.js"></script>
-  </body>
+  <div class="content-container my-6">
+    <h2 class="text-xl font-bold mb-4">Đặc sản được xem nhiều nhất</h2>
+    <div class="container mx-auto px-4">
+      <div id="top-specialties-list" class="horizontal-scroll"></div>
+    </div>
+  </div>
+
+  <div class="testimonials content-container">
+    <h2>Đánh giá từ người dùng</h2>
+    <div id="testimonial-list"></div>
+  </div>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://facebook.com">Facebook</a>
+      <a href="https://instagram.com">Instagram</a>
+      <a href="https://twitter.com">Twitter</a>
+    </div>
+    <p>© 2025 Ẩm Thực Đặc Sản Việt Nam. All rights reserved.</p>
+  </footer>
+
+  <script src="/JS/Home/index.js"></script>
+  <script src="/JS/Home/province.js"></script>
+  <script src="/JS/fetchAPI.js"></script>
+</body>
+
 </html>
