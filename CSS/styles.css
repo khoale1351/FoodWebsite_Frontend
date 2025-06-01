@@ -883,37 +883,80 @@ area {
 }
 
 .recipe-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  margin: 30px 0 10px 20px;
+  margin: 36px 0 18px 36px;
   text-align: left;
+  color: var(--text-color); /* Đổi lại màu chữ mặc định */
+  letter-spacing: 1px;
 }
 
 .tabs {
-  display: flex;
-  gap: 10px;
-  padding: 0 20px;
-  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0 36px;
 }
 
 .tab-button {
-  background-color: #eee;
-  border: 1px solid #ccc;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
+  font-size: 1.15em;
+  padding: 12px 24px;
+  border-radius: 10px;
+  background: #f0faff;
+  border: 2px solid #4fc3f7; /* Xanh dương nhạt */
+  color: #222; /* Chữ màu đen */
+  transition: background 0.2s, border 0.2s, color 0.2s;
 }
 
 .tab-button.active {
-  background-color: #d4f2ff;
-  border-color: #00aaff;
+  background: #4fc3f7; /* Xanh dương nhạt */
+  color: #fff;
+  border-color: #0288d1; /* Xanh dương đậm hơn */
+  box-shadow: 0 2px 12px rgba(33, 150, 243, 0.08);
 }
 
 .tab-content {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin: 10px 20px;
-  padding: 16px;
-  background-color: #f9f9f9;
+  font-size: 1.13em;
+  line-height: 1.8;
+  border-radius: 16px;
+  margin: 18px 36px 36px 36px;
+  padding: 32px 36px;
+  background: #f7fcfa;
+  box-shadow: 0 2px 16px rgba(0, 255, 136, 0.06);
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .recipe-title,
+  .tabs,
+  .tab-content {
+    margin-left: 8px;
+    margin-right: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .tab-content {
+    padding: 18px 8px;
+    font-size: 1em;
+  }
+}
+
+.specialty-item button,
+.specialty-item .detail-btn {
+  background: linear-gradient(90deg, #ff4ecd, #00e676);
+  color: #fff;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 24px;
+  font-weight: 700;
+  font-size: 1.15em;
+  margin: 0 auto;
+  margin-top: 12px;
+  display: block;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.specialty-item button:hover,
+.specialty-item .detail-btn:hover {
+  opacity: 0.85;
+  box-shadow: 0 4px 24px rgba(0, 230, 118, 0.18);
 }
