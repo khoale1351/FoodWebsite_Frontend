@@ -47,40 +47,63 @@ document.addEventListener("DOMContentLoaded", () => {
         const imageUrl = getValidImageUrl(data.imageUrls?.[0]);
 
         detail.innerHTML = `
-          <h2 class="text-2xl font-bold">${data.name}</h2>
-          <img src="${imageUrl}" alt="${
-          data.name
-        }" class="w-full h-64 object-cover rounded mt-2">
-          <p class="mt-4">${data.description || "Không có mô tả"}</p>
-          <p class="mt-2 text-gray-600">Thuộc tỉnh: ${
-            data.provinceName || "Không rõ"
-          }</p>
-        `;
+    <img src="${imageUrl}" alt="${data.name}">
+    <h2>${data.name}</h2>
+    <p>${data.description || "Không có mô tả"}</p>
+    <p class="text-gray-600">Thuộc tỉnh: ${data.provinceName || "Không rõ"}</p>
+  `;
 
-        const recipesContainer = document.getElementById("recipes-container");
+        // Tabs for recipes
+        const tabs = document.getElementById("recipe-tabs");
+        const content = document.getElementById("recipe-content");
+
         if (data.recipes && data.recipes.length > 0) {
-          data.recipes.forEach((recipe) => {
-            const recipeCard = document.createElement("div");
-            recipeCard.className = "p-4 border rounded shadow-sm bg-white";
-            recipeCard.innerHTML = `
-              <h4 class="font-semibold text-lg">${recipe.name}</h4>
-              <p><strong>Thời gian chuẩn bị:</strong> ${
-                recipe.prepareTime || 0
-              } phút</p>
-              <p><strong>Thời gian nấu:</strong> ${
-                recipe.cookingTime || 0
-              } phút</p>
-              <p>${recipe.description || "Không có mô tả"}</p>
-              <p class="text-sm text-gray-500">Lượt yêu thích: ${
-                recipe.favoriteCount
-              } - Lượt xem: ${recipe.viewCount}</p>
-            `;
-            recipesContainer.appendChild(recipeCard);
+          data.recipes.forEach((recipe, index) => {
+            const button = document.createElement("button");
+            button.className = "tab-button";
+            button.innerText = recipe.name;
+            if (index === 0) button.classList.add("active");
+            tabs.appendChild(button);
+
+            button.addEventListener("click", () => {
+              document
+                .querySelectorAll(".tab-button")
+                .forEach((btn) => btn.classList.remove("active"));
+              button.classList.add("active");
+
+              content.innerHTML = `
+        <h4 style="font-weight:bold;">${recipe.name}</h4>
+        <p><strong>Thời gian chuẩn bị:</strong> ${
+          recipe.prepareTime || 0
+        } phút</p>
+        <p><strong>Thời gian nấu:</strong> ${recipe.cookingTime || 0} phút</p>
+        <p><strong>Mô tả:</strong> ${recipe.description || "Không có mô tả"}</p>
+        <h5 style="margin-top:12px; font-weight:bold;">Nguyên liệu:</h5>
+        <ul>
+          ${recipe.recipeIngredients
+            .map(
+              (ing) =>
+                `<li>- ${ing.ingredientName}: ${ing.quantity} ${ing.unit}</li>`
+            )
+            .join("")}
+        </ul>
+        <h5 style="margin-top:12px; font-weight:bold;">Các bước:</h5>
+        <ol>
+          ${recipe.recipeSteps
+            .map((step) => `<li>${step.description}</li>`)
+            .join("")}
+        </ol>
+      `;
+            });
+
+            // Kích hoạt công thức đầu tiên
+            if (index === 0) button.click();
           });
         } else {
-          document.getElementById("recipe-list").style.display = "none";
+          content.innerHTML = `<p style="margin-left: 20px; color: #777;">Món ăn hiện chưa có công thức nào.</p>`;
         }
 
+        // Gửi lịch sử
         const token = localStorage.getItem("token");
         if (token) {
           fetchAPI(
@@ -95,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
         }
       })
+
       .catch((error) => {
         console.error("Lỗi khi tải chi tiết:", error.message);
         document.getElementById(
